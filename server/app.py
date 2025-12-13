@@ -16,6 +16,22 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_ROOT_PASSWORD') # <--- THAY ĐỔI MẬT KHẨU CỦA BẠN
 app.config['MYSQL_DB'] = 'financial_app' 
 
+# --- CẤU HÌNH BẢO MẬT & EMAIL (QUÊN MẬT KHẨU) ---
+# Dùng cho itsdangerous để tạo token. PHẢI LÀ MỘT CHUỖI MẠNH VÀ BÍ MẬT!
+app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', 'default_secret_dev_key_if_not_set')
+
+# Cấu hình Flask-Mail (Thay thế bằng thông tin SMTP của bạn, ví dụ: Gmail)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+# LƯU Ý: Đặt những giá trị này trong file .env
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME') 
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_USERNAME')
+
+# Khởi tạo Flask-Mail
+from flask_mail import Mail
+mail = Mail(app)
 # 1. Khởi tạo và tạo bảng (Tự động chạy script SQL)
 init_database(app)
 
