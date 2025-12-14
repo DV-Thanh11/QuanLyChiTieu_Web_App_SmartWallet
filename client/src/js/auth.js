@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showMessage("Lỗi ĐK: " + result.message, 'error');
             }
         } catch (error) {
-            showMessage("Lỗi kết nối Server. Vui lòng kiểm tra Back-end.", 'error');
+            showMessage("Lỗi kết nối Server..", 'error');
         }
     });
 

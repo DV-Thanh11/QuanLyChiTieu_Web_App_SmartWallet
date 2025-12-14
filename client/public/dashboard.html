@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | SmartWallet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../src/css/style.css">
+</head>
+<body>
+    <div id="dashboard-container">
+        
+        <aside id="sidebar-panel">
+            <header class="balance-header">
+                <h2>Tổng quan số dư</h2>
+                <p id="totalBalance" class="balance-amount">0</p>
+            </header>
+
+            <section class="notifications-section">
+                <h3>Notifications <span class="badge">A 5</span></h3>
+                <ul id="notificationList" class="notification-list">
+                </ul>
+            </section>
+
+            <div class="search-calendar-block">
+                <div class="search-box">
+                    <i class="fas fa-search"></i> Search
+                </div>
+                <div class="calendar-placeholder">
+                    </div>
+            </div>
+        </aside>
+
+        <main id="main-content">
+            <div id="transaction-entry-panel">
+                <div class="transaction-tabs">
+                    <button id="expense-tab" class="tab-btn active" data-type="expense">
+                        <i class="fas fa-minus-circle"></i> Chi tiêu
+                    </button>
+                    <button id="income-tab" class="tab-btn" data-type="income">
+                        <i class="fas fa-plus-circle"></i> Thu nhập
+                    </button>
+                    <button id="stats-tab" class="tab-btn" disabled>
+                        <i class="fas fa-chart-bar"></i> Thống kê
+                    </button>
+                </div>
+                
+                <form id="transactionForm" class="transaction-form-body">
+                    <div class="amount-input-group">
+                        <input type="number" id="transactionAmount" placeholder="Nhập số tiền" required min="1000" step="1000">
+                        <span class="currency-unit">₫</span>
+                        <i class="fas fa-pen edit-icon"></i>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="transactionCategory">Danh mục:</label>
+                        <select id="transactionCategory" required>
+                            <option value="">-- Đang tải Danh mục --</option>
+                        </select>
+                    </div>
+        
+                    <div class="input-group">
+            <label for="transactionDate">Ngày giao dịch:</label>
+            <input type="date" id="transactionDate" required>
+                     </div>
+        
+                    <div class="input-group">
+            <label for="transactionDescription">Mô tả/Ghi chú:</label>
+            <input type="text" id="transactionDescription" placeholder="Mô tả/Ghi chú (Ví dụ: Mua cà phê)" maxlength="255">
+                    </div>
+        
+                     <div id="transactionMessage" class="form-message"></div>
+
+                    <button type="submit" class="submit-btn green-bg">Ghi nhận Giao dịch</button>
+                </form>
+            </div>
+            
+            <i class="fas fa-cog settings-icon"></i>
+            <i class="fas fa-user-circle profile-icon"></i>
+        </main>
+    </div>
+
+    <script src="../src/js/transaction.js"></script>
+    <script src="../src/js/dashboard.js"></script> </body>
+</html>

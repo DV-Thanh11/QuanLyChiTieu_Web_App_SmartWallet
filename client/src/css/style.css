@@ -230,3 +230,277 @@ body {
     font-size: 1.1em;
     margin-bottom: 20px;
 }
+/* --- STYLING CHO FORM GIAO DỊCH (US02) --- */
+#transaction-entry-panel {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Tabs chuyển đổi Chi tiêu/Thu nhập */
+.transaction-tabs {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.tab-btn {
+    padding: 10px 15px;
+    border: none;
+    background-color: transparent;
+    font-weight: 600;
+    cursor: pointer;
+    color: #6c757d;
+    transition: color 0.2s, border-bottom 0.2s;
+}
+
+.tab-btn.active {
+    color: #343a40;
+    border-bottom: 3px solid #22835b; /* Màu xanh lá chủ đạo */
+}
+
+/* Input Group */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+/* Styling chung cho Input/Select */
+.transaction-form-body input:not([type="submit"]), 
+.transaction-form-body select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box; /* Quan trọng để padding không làm tăng width */
+    font-size: 1em;
+}
+
+/* Styling cho trường Số tiền */
+.amount-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 0; /* Xóa padding của group */
+}
+.amount-input input {
+    border: none;
+    flex-grow: 1;
+}
+.currency-unit {
+    padding: 0 10px;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Nút Submit */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+.form-message {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 500;
+}
+/* --- DASHBOARD LAYOUT --- */
+#dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa; /* Màu nền nhẹ */
+}
+
+/* 1. SIDEBAR (CỘT BÊN TRÁI) */
+#sidebar-panel {
+    width: 350px; /* Chiều rộng cố định */
+    background-color: #fefefe;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.balance-header {
+    margin-bottom: 30px;
+}
+
+.balance-amount {
+    font-size: 2em;
+    font-weight: 700;
+    color: #22835b; /* Màu xanh lá cho số dư dương */
+}
+
+/* Notifications */
+.notifications-section h3 {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.badge {
+    background-color: #e0e0e0;
+    color: #333;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+.notification-list {
+    list-style: none;
+    padding: 0;
+}
+
+.notification-list li {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #e9ecef;
+}
+
+.notification-list li:last-child {
+    border-bottom: none;
+}
+
+.notification-list .icon {
+    font-size: 1.2em;
+    width: 30px;
+    text-align: center;
+    margin-right: 15px;
+}
+
+.income-icon { color: #22835b; }
+.expense-icon { color: #dc3545; }
+
+.notification-list .details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-list .title {
+    font-weight: 600;
+}
+
+.notification-list .amount {
+    font-size: 0.85em;
+    color: #6c757d;
+}
+
+/* 2. MAIN CONTENT (CỘT PHẢI) */
+#main-content {
+    flex-grow: 1;
+    padding: 30px;
+    position: relative; /* Để định vị các icon settings/profile */
+}
+
+/* Icon Profile/Settings */
+.settings-icon, .profile-icon {
+    position: absolute;
+    top: 30px;
+    font-size: 1.5em;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.settings-icon { right: 70px; }
+.profile-icon { right: 30px; }
+
+/* Thêm style cho Form Giao dịch (Xem hướng dẫn Frontend trước) */
+#transaction-entry-panel {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    max-width: 600px; /* Giới hạn chiều rộng của form */
+}
+
+/* Style cho Tab Buttons */
+.transaction-tabs {
+    /* Đã định nghĩa trước đó */
+}
+.tab-btn {
+    /* Đã định nghĩa trước đó */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Style cho Input Số tiền (Amount Input) */
+.amount-input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    margin-bottom: 30px;
+}
+
+.amount-input-group input {
+    border: none;
+    flex-grow: 1;
+    font-size: 1.5em; /* Lớn hơn cho số tiền */
+    text-align: right;
+    padding: 15px 10px;
+}
+
+.currency-unit {
+    padding: 0 10px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.edit-icon {
+    padding: 0 15px;
+    color: #007bff;
+    cursor: pointer;
+}
+
+/* Style cho Danh mục (Category List - phần quan trọng của thiết kế) */
+.category-list-placeholder {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 cột danh mục */
+    gap: 15px;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.category-list-placeholder p {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.category-list-placeholder p:hover {
+    background-color: #e2e6ea;
+}
+
+.green-bg {
+    background-color: #22835b;
+    color: white;
+}
+.red-bg {
+    background-color: #dc3545; /* Màu đỏ cho chi tiêu */
+    color: white;
+}
