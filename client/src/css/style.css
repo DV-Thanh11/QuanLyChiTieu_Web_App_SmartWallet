@@ -1,92 +1,232 @@
-/* Thiết lập font và nền chung */
+/* RESET VÀ CẤU TRÚC CHÍNH */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* Màu nền nhẹ nhàng: Light Blue-Grey */
-    background-color: #e9ecef; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    /* Xóa bỏ center để chiếm toàn bộ màn hình */
+    background-color: #f8f9fa; /* Màu nền rất nhẹ */
     margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
 }
 
-/* Container chứa form Đăng nhập/Đăng ký */
-.auth-container {
-    background: white;
-    padding: 30px;
-    /* Bo góc mềm mại */
-    border-radius: 12px; 
-    /* Đổ bóng nhẹ */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    width: 380px;
+#main-auth-layout {
+    display: flex; /* Dùng Flexbox cho bố cục 2 cột */
+    width: 100%; /* Giới hạn chiều rộng tổng thể */
+    min-height: 100vh;
+    background-color: white;
+}
+
+/* ---------------------- CỘT BÊN TRÁI: BRANDING ---------------------- */
+#branding-section {
+    flex: 1;
+    background-color: #e7f0fb; 
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center;
     text-align: center;
-    /* Tăng cường độ rõ ràng */
-    border: 1px solid #dee2e6;
+    
+    /* THÊM ẢNH MINH HỌA LÀM BACKGROUND */
+    background-image: url('../../public/assets/images/smartwallet_illustration.png');
+    
+    /* Vị trí ảnh: căn giữa dưới cùng */
+    background-position: center; 
+    
+    /* Kích thước ảnh: Đảm bảo ảnh hiển thị đầy đủ (contain) hoặc tùy chỉnh pixel */
+    background-size: auto; /* Tùy chỉnh kích thước ảnh: 400px chiều rộng */
+    
+    /* Không lặp lại ảnh */
+    background-repeat: no-repeat;
 }
 
-/* Định dạng Tiêu đề (Chào mừng) */
-#welcomeMessage h3 {
-    color: #343a40; 
-    font-size: 1.5em;
+
+.branding-content h1 {
+    color: #343a40;
+    font-size: 3em;
+    font-weight: 800;
     margin-bottom: 5px;
 }
-/* Định dạng Tiêu đề phụ */
-#welcomeMessage p {
-    margin: 0;
+
+.branding-content p {
+    color: #6c757d;
+    font-size: 3em;
+    margin-bottom: 30px;
 }
-/* Đảm bảo chữ SmartWallet được in đậm */
-#welcomeMessage h3 b {
-    font-weight: bold;
+.illustration-placeholder {
+    /* Cho phép vùng chứa ảnh co giãn */
+    flex-grow: 1; 
+    display: flex;
+    justify-content: center; /* Căn giữa ngang */
+    align-items: center; /* Căn giữa dọc */
+    /* Giới hạn chiều rộng ảnh theo chiều ngang */
+    max-width: 1500px; 
+}
+.illustration-placeholder img {
+   /* Đảm bảo ảnh không vượt quá kích thước gốc */
+    max-width: 100%; 
+    height: auto;
+    /* GIỚI HẠN CHIỀU CAO để nó không chiếm quá nửa cột */
+    max-height: 40vh; /* Ví dụ: Giới hạn tối đa 40% chiều cao viewport */
+    /* Đảm bảo ảnh không bị kéo dãn quá mức */
+    object-fit: contain;;
 }
 
+/* ---------------------- CỘT BÊN PHẢI: AUTH FORM ---------------------- */
+#auth-section {
+    flex: 1; /* Chiếm 50% chiều rộng */
+    padding: 50px 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Căn giữa nội dung form theo chiều dọc */
+}
 
-/* Định dạng Input */
-input[type="email"], input[type="password"], input[type="text"] {
-    width: 90%;
+/* ---------------------- STYLING TABS (Sign up / Log in) ---------------------- */
+#tab-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 25px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #e9ecef; /* Đường gạch mờ phía dưới */
+    padding-bottom: 10px;
+}
+
+.auth-tab {
+    font-size: 1.7em;
+    font-weight: 600;
+    color: #adb5bd; /* Màu chữ mờ cho tab không active */
+    cursor: pointer;
+    padding-bottom: 10px;
+    transition: color 0.3s, border-bottom-color 0.3s;
+}
+
+.auth-tab.active {
+    color: #343a40; /* Màu chữ đậm cho tab active */
+    border-bottom: 3px solid #6c757d; /* Gạch chân đậm cho tab active */
+}
+
+/* ---------------------- STYLING FORM INPUTS ---------------------- */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Khoảng cách giữa các phần tử */
+}
+
+.auth-form label {
+    font-weight: 600;
+    color: #343a40;
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+.auth-form input {
     padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ced4da; 
-    border-radius: 6px; 
-    box-sizing: border-box; 
+    border: 1px solid #ced4da;
+    border-radius: 8px; /* Bo góc nhẹ */
+    font-size: 1em;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
     transition: border-color 0.3s;
 }
 
-input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus {
-    border-color: #007bff; 
+.auth-form input:focus {
+    border-color: #007bff;
     outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-/* Định dạng Nút chính */
-button:not(.toggle-btn) {
-    background-color: #007bff; 
-    color: white;
-    padding: 12px 15px;
-    margin: 15px 0 10px 0;
-    border: none;
-    border-radius: 6px; 
-    cursor: pointer;
+
+
+.or-separator {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 0.9em;
+    color: #adb5bd;
+    /* Dùng Flexbox để tạo gạch ngang */
+    display: flex;
+    align-items: center;
+}
+
+.or-separator::before,
+.or-separator::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e9ecef;
+    margin: 0 10px;
+}
+
+/* ---------------------- NÚT ĐĂNG NHẬP/ĐĂNG KÝ CHÍNH ---------------------- */
+.main-auth-btn {
     width: 100%;
-    font-size: 17px;
-    transition: background-color 0.3s;
-}
-
-button:hover:not(.toggle-btn) {
-    background-color: #0056b3;
-}
-
-/* Định dạng Nút chuyển đổi (toggle) */
-.toggle-btn {
-    background: none;
+    padding: 12px;
     border: none;
-    color: #007bff;
-    cursor: pointer;
-    text-decoration: none; 
+    border-radius: 8px;
+    font-size: 2em;
     font-weight: 600;
-    padding: 0;
-    margin: 0;
-    font-size: inherit;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s, opacity 0.3s;
 }
 
-.toggle-btn:hover {
-    color: #0056b3; 
+/* Nút chính màu xanh lá theo mẫu */
+.green-bg {
+    background-color: #8c9fb9; /* Màu xám xanh lá */
+    color: rgba(253, 254, 254);
+}
+
+.green-bg:hover {
+    background-color: #5a6268;
+}
+
+/* Link Quên mật khẩu */
+.forgot-password {
+    text-align: right;
+    font-size: 0.9em;
+    color: #007bff;
+    text-decoration: none;
+    margin-top: -5px;
+    margin-bottom: 5px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Vùng hiển thị thông báo */
+#message {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+/* Tinh chỉnh cho màn hình nhỏ hơn (Responsive) */
+@media (max-width: 992px) {
+    #branding-section {
+        display: none; /* Ẩn cột Branding trên màn hình tablet/mobile */
+    }
+    #main-auth-layout {
+        width: 90%;
+        min-height: auto;
+        box-shadow: none;
+        border: 1px solid #ced4da;
+    }
+    #auth-section {
+        padding: 40px;
+    }
+    #tab-container {
+        justify-content: center; /* Căn giữa tab khi chỉ còn 1 cột */
+    }
+}
+/* Styling Tiêu đề và Mô tả cho Form Quên Mật Khẩu */
+#forgotPasswordForm h3 {
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 5px;
+}
+
+#forgotPasswordForm .form-description {
+    text-align: center;
+    color: #6c757d;
+    font-size: 1.1em;
+    margin-bottom: 20px;
 }

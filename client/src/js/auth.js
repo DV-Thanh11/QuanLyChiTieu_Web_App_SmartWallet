@@ -1,77 +1,61 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Khai báo các phần tử DOM cần thiết
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const toggleRegisterBtn = document.getElementById('toggleRegisterBtn');
-    const toggleLoginBtn = document.getElementById('toggleLoginBtn');
-    const registerSection = document.getElementById('registerSection');
-    const messageDisplay = document.getElementById('message');
-    const authTitle = document.getElementById('authTitle');
-
-    // Hàm hiển thị thông báo lỗi/thành công// Địa chỉ base URL của API Flask (chạy trên cổng 5000)
 const API_BASE_URL = 'http://127.0.0.1:5000/api/auth';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Khai báo các phần tử DOM cần thiết
+    // Khai báo các phần tử DOM cần thiết
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
-    const toggleRegisterBtn = document.getElementById('toggleRegisterBtn');
-    const toggleLoginBtn = document.getElementById('toggleLoginBtn');
-    const registerSection = document.getElementById('registerSection');
-    const messageDisplay = document.getElementById('message');
-    const authTitle = document.getElementById('authTitle');
     
-    // Khai báo thêm vùng hiển thị lời chào (MỚI)
-    const welcomeMessage = document.getElementById('welcomeMessage');
+    // Khai báo các Tabs (MỚI)
+    const loginTab = document.getElementById('login-tab');
+    const signupTab = document.getElementById('signup-tab');
 
+    const messageDisplay = document.getElementById('message');
+    
+    // Loại bỏ các khai báo cũ không dùng trong giao diện mới:
+    // const toggleRegisterBtn = document.getElementById('toggleRegisterBtn');
+    // const toggleLoginBtn = document.getElementById('toggleLoginBtn');
+    // const registerSection = document.getElementById('registerSection');
+    // const authTitle = document.getElementById('authTitle');
+    // const welcomeMessage = document.getElementById('welcomeMessage'); 
+    
     // Hàm hiển thị thông báo lỗi/thành công
     function showMessage(msg, type) {
         messageDisplay.textContent = msg;
         messageDisplay.style.color = type === 'error' ? 'red' : 'green';
     }
-    
-   // ... (Các dòng code khác giữ nguyên) ...
 
-    // Hàm cập nhật lời chào theo yêu cầu của bạn
-    function updateWelcomeMessage(state) {
-        let title = '';
-        // SỬ DỤNG THẺ <b> VÀ CHỈNH SỬA CÁC ĐỊNH DẠNG KHÁC TRONG DÒNG CHÚC MỪNG
-        if (state === 'login') {
-            title = 'Chào mừng quay trở lại với <b>SmartWallet</b>'; 
-        } else { // state === 'register'
-            title = 'Chào mừng bạn lần đầu đến với <b>SmartWallet</b>';
-        }
-        
-        // Đoạn HTML chèn vào vùng welcomeMessage
-        welcomeMessage.innerHTML = `
-            <h3 style="margin-bottom: 5px;">${title}</h3>
-            <p style="color: #6c757d; font-size: 0.9em; margin-bottom: 10px;">Chúc bạn có một trải nghiệm tuyệt vời</p>
-            <hr style="border: 0; border-top: 1px solid #eee;">
-        `;
-    }
-
-
-    
-    // Khởi tạo lời chào ban đầu (trạng thái Đăng nhập)
-    updateWelcomeMessage('login');
-
-    // Hàm chuyển đổi sang Form Đăng ký
-    toggleRegisterBtn.addEventListener('click', () => {
-        registerSection.style.display = 'block';
+    // Hàm chuyển đổi chế độ xác thực (Đăng nhập/Đăng ký)
+    // Hàm chuyển đổi chế độ xác thực (Đăng nhập/Đăng ký/Quên Mật khẩu)
+    function switchAuthMode(mode) {
+        // Ẩn tất cả form trước khi hiển thị form cần thiết
         loginForm.style.display = 'none';
-        authTitle.textContent = 'Đăng Ký Tài Khoản';
-        updateWelcomeMessage('register'); // Cập nhật lời chào
-        messageDisplay.textContent = ''; 
-    });
+        registerForm.style.display = 'none';
+        forgotPasswordForm.style.display = 'none'; // Thêm ẩn form mới
 
-    // Hàm chuyển đổi về Form Đăng nhập
-    toggleLoginBtn.addEventListener('click', () => {
-        registerSection.style.display = 'none';
-        loginForm.style.display = 'block';
-        authTitle.textContent = 'Đăng Nhập';
-        updateWelcomeMessage('login'); // Cập nhật lời chào
-        messageDisplay.textContent = '';
-    });
+        // Xóa trạng thái active của tabs
+        loginTab.classList.remove('active');
+        signupTab.classList.remove('active');
+
+        if (mode === 'login') {
+            loginForm.style.display = 'flex';
+            loginTab.classList.add('active');
+        } else if (mode === 'register') {
+            registerForm.style.display = 'flex';
+            signupTab.classList.add('active');
+        } else if (mode === 'forgot') {
+            forgotPasswordForm.style.display = 'flex';
+            // Không set active cho tab nào khi ở chế độ quên mật khẩu
+        }
+    
+        messageDisplay.textContent = ''; // Xóa thông báo cũ
+    }
+    
+    // Gắn sự kiện click cho các Tabs
+    loginTab.addEventListener('click', () => switchAuthMode('login'));
+    signupTab.addEventListener('click', () => switchAuthMode('register'));
+    
+    // Đảm bảo trạng thái ban đầu là 'login'
+    switchAuthMode('login');
 
     // --- Xử lý ĐĂNG KÝ (US01) ---
     registerForm.addEventListener('submit', async (e) => {
@@ -110,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) { // Mã 200-299, ví dụ 201 Created
                 showMessage(result.message + " Vui lòng đăng nhập.", 'success');
                 registerForm.reset();
-                toggleLoginBtn.click(); // Tự động chuyển về form Đăng nhập
+                switchAuthMode('login'); // Tự động chuyển về tab Đăng nhập
             } else {
                 // Mã lỗi Server (409 Conflict, 400 Bad Request, 500 Server Error,...)
                 showMessage("Lỗi ĐK: " + result.message, 'error');
@@ -126,7 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
-        
+        // KHAI BÁO MỚI CHO FORGOT PASSWORD
+        const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+        const backToLoginFromForgotBtn = document.getElementById('backToLoginFromForgotBtn');
         showMessage("Đang đăng nhập...", 'success');
 
         try {
@@ -161,90 +148,45 @@ document.addEventListener('DOMContentLoaded', () => {
              showMessage("Lỗi kết nối Server. Vui lòng kiểm tra Back-end.", 'error');
         }
     });
+    // Gắn sự kiện cho link "Quên mật khẩu"
+    forgotPasswordLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    switchAuthMode('forgot');
+    });
 
-});
-    function showMessage(msg, type) {
-        messageDisplay.textContent = msg;
-        messageDisplay.style.color = type === 'error' ? 'red' : 'green';
-    }
+    // Gắn sự kiện cho nút "Quay lại Đăng nhập" trong form Quên Mật khẩu
+    backToLoginFromForgotBtn.addEventListener('click', () => {
+        switchAuthMode('login');
+    });
+
+    // --- Xử lý Gửi yêu cầu Quên Mật khẩu ---
+    forgotPasswordForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
     
-    // Hàm chuyển đổi sang Form Đăng ký
-    toggleRegisterBtn.addEventListener('click', () => {
-        registerSection.style.display = 'block';
-        loginForm.style.display = 'none';
-        authTitle.textContent = 'Đăng Ký Tài Khoản';
-        messageDisplay.textContent = ''; // Xóa thông báo cũ
-    });
+    const email = document.getElementById('forgotEmail').value;
+    showMessage("Đang gửi liên kết khôi phục tới Email...", 'success');
 
-    // Hàm chuyển đổi về Form Đăng nhập
-    toggleLoginBtn.addEventListener('click', () => {
-        registerSection.style.display = 'none';
-        loginForm.style.display = 'block';
-        authTitle.textContent = 'Đăng Nhập';
-        messageDisplay.textContent = '';
-    });
-
-    // --- Xử lý ĐĂNG KÝ (US01) ---
-    registerForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    try {
+        // Gửi yêu cầu POST đến Backend API
+        const response = await fetch(`${API_BASE_URL}/forgot-password`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
         
-        const name = document.getElementById('regName').value;
-        const email = document.getElementById('regEmail').value;
-        const password = document.getElementById('regPassword').value;
-        const confirmPassword = document.getElementById('regConfirmPassword').value;
+        const result = await response.json();
 
-        // 1. Validation mật khẩu
-        if (password !== confirmPassword) {
-            showMessage("Lỗi: Mật khẩu xác nhận không khớp.", 'error');
-            return;
-        }
-        if (password.length < 6) {
-            showMessage("Lỗi: Mật khẩu phải có ít nhất 6 ký tự.", 'error');
-            return;
-        }
-
-        // 2. Lấy dữ liệu người dùng hiện tại từ LocalStorage (mô phỏng DB)
-        // Dữ liệu được lưu dưới dạng: { email: { name: '...', password: '...' } }
-        const users = JSON.parse(localStorage.getItem('users')) || {};
-        
-        // 3. Kiểm tra trùng email
-        if (users[email]) {
-            showMessage("Lỗi: Email này đã được đăng ký.", 'error');
-            return;
-        }
-
-        // 4. Lưu người dùng mới
-        users[email] = { name: name, password: password, transactions: [] }; // Thêm mảng transactions
-        localStorage.setItem('users', JSON.stringify(users));
-
-        showMessage("Đăng ký thành công! Quay lại Đăng nhập.", 'success');
-        registerForm.reset();
-        
-        // Tự động chuyển về form Đăng nhập
-        toggleLoginBtn.click();
-    });
-
-    // --- Xử lý ĐĂNG NHẬP (US01) ---
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        
-        const users = JSON.parse(localStorage.getItem('users')) || {};
-        const user = users[email];
-
-        // 1. Kiểm tra Email và Mật khẩu
-        if (user && user.password === password) {
-            // 2. Đăng nhập thành công: Lưu thông tin người dùng đang hoạt động
-            localStorage.setItem('currentUserEmail', email);
-            showMessage("Đăng nhập thành công! Đang chuyển hướng...", 'success');
-            
-            // 3. Chuyển hướng đến trang Dashboard (US03)
-            window.location.href = 'dashboard.html'; 
+        if (response.ok) {
+            showMessage(result.message, 'success');
+            // resetForm.reset(); // Không reset form để người dùng thấy email họ đã nhập
         } else {
-            showMessage("Lỗi: Email hoặc Mật khẩu không đúng.", 'error');
+            showMessage("Lỗi: " + result.message, 'error');
         }
+    } catch (error) {
+        showMessage("Lỗi kết nối Server khi yêu cầu khôi phục.", 'error');
+    }
     });
 
 });
