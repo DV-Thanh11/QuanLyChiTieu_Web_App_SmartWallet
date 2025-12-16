@@ -1,16 +1,10 @@
-# server/api/transaction_routes.py
-
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify, current_app, session # <--- Đã thêm session
 import mysql.connector
-import jwt # Cần thiết cho việc xác thực token sau này
-from functools import wraps # Dùng cho decorator xác thực
 
-# Định nghĩa Blueprint cho các route giao dịch
-transaction_bp = Blueprint('transactions', __name__)
+transaction_bp = Blueprint('transaction', __name__)
 
-# --- HÀM HỖ TRỢ KẾT NỐI DB ---
+# --- HÀM KẾT NỐI DB (Giữ nguyên logic của bạn) ---
 def get_db_connection():
-    # Sử dụng cùng hàm kết nối đã định nghĩa trong auth_routes
     return mysql.connector.connect(
         host=current_app.config['MYSQL_HOST'],
         user=current_app.config['MYSQL_USER'],
@@ -18,88 +12,64 @@ def get_db_connection():
         database=current_app.config['MYSQL_DB']
     )
 
-# ----------------------------------------------------
-# US02: ENDPOINT THÊM GIAO DỊCH (TẠM THỜI BỎ QUA XÁC THỰC USER)
-# ----------------------------------------------------
-
-@transaction_bp.route('/transactions', methods=['POST'])
+# --- ROUTE 1: THÊM GIAO DỊCH (US02) ---
+@transaction_bp.route('/add', methods=['POST']) # <--- Sửa thành /add
 def add_transaction():
-    data = request.json
-    
-    # Lấy dữ liệu từ Frontend
-    user_id = data.get('user_id') # Tạm thời lấy trực tiếp từ Frontend
-    type = data.get('type') # 'income' hoặc 'expense'
-    amount = data.get('amount')
-    description = data.get('description')
-    transaction_date = data.get('transaction_date') # Định dạng YYYY-MM-DD
-    category_id = data.get('category_id') # ID danh mục
-
-    # 1. Kiểm tra dữ liệu cần thiết
-    if not all([user_id, type, amount, transaction_date]):
-        return jsonify({"message": "Thiếu thông tin giao dịch bắt buộc."}), 400
-    
-    # 2. Xử lý logic và chèn vào DB
-    db = None
     try:
-        db = get_db_connection()
-        cursor = db.cursor()
+        data = request.json
         
-        # SQL cho việc chèn giao dịch
+        # 1. Lấy dữ liệu
+        # Ưu tiên lấy user_id từ session, nếu không có thì lấy từ data gửi lên, hoặc mặc định 1
+        user_id = session.get('user_id') or data.get('user_id', 1)
+        
+        type_trans = data.get('type')
+        amount = data.get('amount')
+        description = data.get('description')
+        transaction_date = data.get('transaction_date')
+        category = data.get('category') # Frontend gửi 'category', không phải 'category_id'
+
+        # 2. Kết nối DB
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # 3. SQL (Lưu ý: Bảng của bạn dùng cột 'category' dạng chữ, không phải ID)
         sql = """
-        INSERT INTO transactions 
-        (user_id, transaction_date, type, amount, description, category_id) 
-        VALUES (%s, %s, %s, %s, %s, %s)
+            INSERT INTO transactions 
+            (user_id, transaction_date, type, amount, description, category) 
+            VALUES (%s, %s, %s, %s, %s, %s)
         """
-        params = (user_id, transaction_date, type, amount, description, category_id)
+        # Nếu bảng bạn tên cột là category_id thì sửa lại SQL, nhưng theo bài trước là category (text)
+        cursor.execute(sql, (user_id, transaction_date, type_trans, amount, description, category))
         
-        cursor.execute(sql, params)
-        db.commit()
+        conn.commit()
+        cursor.close()
+        conn.close()
         
-        return jsonify({"message": "Thêm giao dịch thành công!", "transaction_id": cursor.lastrowid}), 201
+        return jsonify({"message": "Thêm thành công!"}), 201
         
-    except mysql.connector.Error as err:
-        print(f"Lỗi MySQL khi thêm giao dịch: {err}")
-        return jsonify({"message": "Lỗi server khi thêm giao dịch."}), 500
     except Exception as e:
-        print(f"Lỗi không xác định: {e}")
-        return jsonify({"message": "Lỗi server nội bộ."}), 500
-    finally:
-        if db and db.is_connected():
-            cursor.close()
-            db.close()
-            
-    
-# Thêm các route khác (GET, PUT, DELETE) sau khi hoàn thành POST
-# ...
-@transaction_bp.route('/categories', methods=['GET'])
-def get_categories():
-    # Lấy tham số 'type' từ URL query (ví dụ: /categories?type=income)
-    category_type = request.args.get('type') 
-    
-    if category_type not in ['income', 'expense']:
-        return jsonify({"message": "Thiếu hoặc sai tham số 'type'."}), 400
+        print(f"Lỗi Backend: {e}")
+        return jsonify({"message": f"Lỗi server: {str(e)}"}), 500
 
-    db = None
+# --- ROUTE 2: LẤY DANH SÁCH (Đếm số thông báo) ---
+@transaction_bp.route('/list', methods=['GET'])
+def get_transactions():
+    # Lấy user_id từ session (mặc định 1 để test)
+    user_id = session.get('user_id', 1) 
+
     try:
-        db = get_db_connection()
-        cursor = db.cursor(dictionary=True)
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True) 
         
-        # 1. Truy vấn các danh mục theo loại
-        sql = "SELECT category_id, name FROM categories WHERE type = %s"
-        cursor.execute(sql, (category_type,))
+        sql = "SELECT * FROM transactions WHERE user_id = %s ORDER BY created_at DESC"
+        cursor.execute(sql, (user_id,))
+        transactions = cursor.fetchall()
         
-        categories = cursor.fetchall()
+        cursor.close()
+        conn.close()
 
-        # 2. Trả về danh sách danh mục
-        return jsonify({
-            "message": "Lấy danh mục thành công.",
-            "categories": categories
-        }), 200
-        
-    except mysql.connector.Error as err:
-        print(f"Lỗi MySQL khi lấy danh mục: {err}")
-        return jsonify({"message": "Lỗi server khi xử lý danh mục."}), 500
-    finally:
-        if db and db.is_connected():
-            cursor.close()
-            db.close()
+        return jsonify(transactions), 200
+
+    except Exception as e:
+        print(f"Lỗi lấy list: {e}")
+        return jsonify([]), 500
