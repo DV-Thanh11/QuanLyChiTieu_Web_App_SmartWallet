@@ -47,13 +47,8 @@ CREATE TABLE categories (
     UNIQUE KEY unique_category_type (name, type)
 );
 
--- Thêm một cột khóa ngoại vào bảng transactions để liên kết với categories
-ALTER TABLE transactions
-ADD COLUMN category_id INT,
-ADD FOREIGN KEY (category_id) REFERENCES categories(category_id)
-    ON DELETE SET NULL; -- Nếu danh mục bị xóa, cột category_id trong transactions sẽ được đặt là NULL.
--- Chèn các danh mục Thu nhập
-INSERT INTO categories (name, type) VALUES 
+
+INSERT IGNORE INTO categories (name, type) VALUES 
 ('Lương', 'income'),
 ('Thưởng', 'income'),
 ('Phụ cấp', 'income'),
@@ -61,7 +56,7 @@ INSERT INTO categories (name, type) VALUES
 ('Khoản thu khác', 'income');
 
 -- Chèn các danh mục Chi tiêu (Ví dụ)
-INSERT INTO categories (name, type) VALUES 
+INSERT IGNORE INTO categories (name, type) VALUES 
 ('Ăn uống', 'expense'),
 ('Tiền nhà/Phòng', 'expense'),
 ('Di chuyển', 'expense'),
