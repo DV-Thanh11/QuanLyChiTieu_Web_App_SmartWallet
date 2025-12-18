@@ -32,7 +32,7 @@ def add_transaction():
     amount = data.get('amount')
     description = data.get('description')
     transaction_date = data.get('transaction_date') # Định dạng YYYY-MM-DD
-    category_id = data.get('category_id') # ID danh mục
+    category_id = data.get('category_id') if data.get('category_id') else None
 
     # 1. Kiểm tra dữ liệu cần thiết
     if not all([user_id, type, amount, transaction_date]):

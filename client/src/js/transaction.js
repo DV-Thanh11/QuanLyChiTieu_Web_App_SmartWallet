@@ -107,7 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
       showMessage("Lỗi: Số tiền không hợp lệ.", "error");
       return;
     }
-
+    if (!category_id || category_id === "") {
+    showMessage("Lỗi: Vui lòng chọn một danh mục.", "error");
+    return;
+    }
     showMessage("Đang ghi nhận giao dịch...", "success");
 
     try {
