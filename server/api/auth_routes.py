@@ -92,3 +92,34 @@ def login():
         if db and db.is_connected():
             cursor.close()
             db.close()
+
+
+@auth_bp.route('/status', methods=['GET'])
+def status():
+    # Trả về thông tin user nếu có `user_id` (tạm thời dùng param vì chưa có session)
+    user_id = request.args.get('user_id')
+    if not user_id:
+        return jsonify({"logged_in": False}), 200
+
+    db = None
+    try:
+        db = get_db_connection()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("SELECT user_id, name, email FROM users WHERE user_id = %s", (user_id,))
+        user = cursor.fetchone()
+        if not user:
+            return jsonify({"logged_in": False}), 200
+        return jsonify({"logged_in": True, "user": user}), 200
+    except mysql.connector.Error as err:
+        print(f"Lỗi MySQL khi kiểm tra status: {err}")
+        return jsonify({"logged_in": False}), 500
+    finally:
+        if db and db.is_connected():
+            cursor.close()
+            db.close()
+
+
+@auth_bp.route('/logout', methods=['POST'])
+def logout():
+    # Hiện tại chưa dùng session server-side, nên chỉ trả về success để front-end có thể xóa localStorage
+    return jsonify({"message": "Đã đăng xuất."}), 200

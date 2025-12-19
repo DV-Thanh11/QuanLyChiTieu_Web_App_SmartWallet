@@ -342,6 +342,75 @@ def delete_category(cat_id):
         if db and db.is_connected():
             cursor.close()
             db.close()
+# --- [BỔ SUNG MỚI] API THỐNG KÊ (stats) ---
+@transaction_bp.route('/transactions/stats', methods=['GET'])
+def transaction_stats():
+    # Trả về thống kê theo danh mục và theo tháng cho user
+    user_id = request.args.get('user_id')
+    if not user_id:
+        return jsonify({"message": "Thiếu tham số 'user_id'."}), 400
+
+    # Tuỳ chọn: start_date & end_date (YYYY-MM-DD)
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+
+    # Nếu không có khoảng thời gian, mặc định lấy 6 tháng gần nhất
+    db = None
+    try:
+        db = get_db_connection()
+        cursor = db.cursor(dictionary=True)
+
+        # Nếu không có start/end, tính mặc định 6 tháng trở về trước
+        if not start_date or not end_date:
+            cursor.execute("SELECT CURDATE() AS today")
+            today = cursor.fetchone()['today']
+            # MySQL: DATE_SUB
+            cursor.execute("SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 6 MONTH), '%Y-%m-%d') AS s, DATE_FORMAT(CURDATE(), '%Y-%m-%d') AS e")
+            dr = cursor.fetchone()
+            start_date = dr['s']
+            end_date = dr['e']
+
+        # 1) Tổng theo danh mục
+        sql_cat = '''
+        SELECT c.name AS category, c.type, SUM(t.amount) AS total
+        FROM transactions t
+        LEFT JOIN categories c ON t.category_id = c.category_id
+        WHERE t.user_id = %s AND t.transaction_date BETWEEN %s AND %s
+        GROUP BY c.name, c.type
+        '''
+        cursor.execute(sql_cat, (user_id, start_date, end_date))
+        by_category = cursor.fetchall()
+
+        # 2) Tổng theo tháng (YYYY-MM)
+        sql_month = '''
+        SELECT DATE_FORMAT(transaction_date, '%Y-%m') AS month, 
+               SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) AS income,
+               SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) AS expense
+        FROM transactions
+        WHERE user_id = %s AND transaction_date BETWEEN %s AND %s
+        GROUP BY month
+        ORDER BY month
+        '''
+        cursor.execute(sql_month, (user_id, start_date, end_date))
+        by_month = cursor.fetchall()
+
+        return jsonify({
+            "message": "OK",
+            "by_category": by_category,
+            "by_month": by_month,
+            "start_date": start_date,
+            "end_date": end_date
+        }), 200
+
+    except mysql.connector.Error as err:
+        print(f"Lỗi MySQL khi lấy stats: {err}")
+        return jsonify({"message": "Lỗi server khi lấy stats."}), 500
+    finally:
+        if db and db.is_connected():
+            cursor.close()
+            db.close()
+
+
 # --- [BỔ SUNG MỚI] API ĐẾM TỔNG SỐ GIAO DỊCH ---
 @transaction_bp.route('/transactions/count', methods=['GET'])
 def count_transactions():

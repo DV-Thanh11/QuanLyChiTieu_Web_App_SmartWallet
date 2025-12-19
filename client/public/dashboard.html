@@ -25,6 +25,11 @@
       </aside>
 
       <main id="main-content">
+        <div class="profile-area">
+          <span id="profileName" class="profile-name"></span>
+          <button id="btnLogout" class="logout-btn">Đăng xuất</button>
+        </div>
+
         <div id="transaction-entry-panel" class="transaction-card">
           <div class="card-header">
             <h3><i class="fas fa-edit"></i> Thêm Giao Dịch</h3>
@@ -86,12 +91,25 @@
             </button>
           </form>
         </div>
+
+        <div class="charts">
+          <div class="chart-card">
+            <h3>Chi tiêu theo danh mục</h3>
+            <canvas id="categoryChart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Thu/Chi theo tháng</h3>
+            <canvas id="monthlyChart"></canvas>
+          </div>
+        </div>
+
         <i class="fas fa-cog settings-icon"></i>
         <i class="fas fa-user-circle profile-icon"></i>
       </main>
     </div>
 
     <script src="../src/js/transaction.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../src/js/dashboard.js"></script>
   </body>
 </html>
