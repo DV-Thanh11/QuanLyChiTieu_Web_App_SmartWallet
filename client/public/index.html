@@ -1,0 +1,68 @@
+    <!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWallet - Đăng Nhập & Đăng Ký</title>
+    <link rel="stylesheet" href="../src/css/style.css"> 
+    
+    </head>
+<body>
+    
+    <div id="main-auth-layout">
+
+        <div id="branding-section">
+            <div class="branding-content">
+                <h1>SMARTWALLET</h1>
+                <p>Quản lý ví theo cách của bạn</p>
+                <div class="illustration-placeholder">
+                </div>
+            </div>
+        </div>
+
+        <div id="auth-section">
+            
+            <div id="tab-container">
+                <span id="signup-tab" class="auth-tab">Sign up</span> 
+                <span id="login-tab" class="auth-tab active">Log in</span> 
+            </div>
+
+            <div id="auth-form-container">
+
+                <form id="loginForm" class="auth-form">
+
+                    <label for="loginEmail">Email*</label>
+                    <input type="email" id="loginEmail" required>
+
+                    <label for="loginPassword">Password*</label>
+                    <input type="password" id="loginPassword" required>
+            
+                    
+                    <button type="submit" class="main-auth-btn green-bg">Log in</button>
+                </form>
+
+                <form id="registerForm" class="auth-form" style="display: none;">
+                    
+                    
+                    <label for="regName">Name*</label>
+                    <input type="text" id="regName" required>
+
+                    <label for="regEmail">Email*</label>
+                    <input type="email" id="regEmail" required>
+
+                    <label for="regPassword">Password*</label>
+                    <input type="password" id="regPassword" placeholder="Min 6 ký tự" required>
+
+                    <label for="regConfirmPassword">Confirm Password*</label>
+                    <input type="password" id="regConfirmPassword" required>
+                    
+                    <button type="submit" class="main-auth-btn green-bg">Sign up</button>
+                </form>
+                <p id="message"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../src/js/auth.js"></script>
+</body>
+</html>

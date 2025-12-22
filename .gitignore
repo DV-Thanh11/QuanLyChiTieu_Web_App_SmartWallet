@@ -1,0 +1,12 @@
+# Bỏ qua thư mục môi trường ảo (để code nhẹ, không bị nặng)
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Bỏ qua file hệ thống
+.DS_Store
+.vscode/
+
+# Bỏ qua file mật khẩu
+.env

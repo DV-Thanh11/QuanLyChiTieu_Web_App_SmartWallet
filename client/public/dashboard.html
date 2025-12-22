@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | SmartWallet</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../src/css/style.css" />
+  </head>
+  <body>
+    <div id="dashboard-container">
+      <aside id="sidebar-panel">
+        <header class="balance-header">
+          <h2>Tổng quan số dư</h2>
+          <p id="totalBalance" class="balance-amount">0</p>
+        </header>
+
+        <section class="notifications-section">
+          <h3>Thông báo <span id="transaction-count" class="badge">0</span></h3>
+          <ul id="notificationList" class="notification-list"></ul>
+        </section>
+      </aside>
+
+      <main id="main-content">
+        <div class="profile-area">
+          <span id="profileName" class="profile-name"></span>
+          <button id="btnLogout" class="logout-btn">Đăng xuất</button>
+        </div>
+
+        <!-- Phần Tổng quan số liệu -->
+        <div class="stats-overview">
+          <div class="stat-card income-card">
+            <div class="stat-icon">
+              <i class="fas fa-arrow-up"></i>
+            </div>
+            <div class="stat-info">
+              <h4>Tổng Thu</h4>
+              <p id="totalIncome" class="stat-value">0đ</p>
+            </div>
+          </div>
+          <div class="stat-card expense-card">
+            <div class="stat-icon">
+              <i class="fas fa-arrow-down"></i>
+            </div>
+            <div class="stat-info">
+              <h4>Tổng Chi</h4>
+              <p id="totalExpense" class="stat-value">0đ</p>
+            </div>
+          </div>
+          <div class="stat-card balance-card">
+            <div class="stat-icon">
+              <i class="fas fa-wallet"></i>
+            </div>
+            <div class="stat-info">
+              <h4>Số Dư</h4>
+              <p id="mainBalance" class="stat-value">0đ</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="transaction-entry-panel" class="transaction-card">
+          <div class="card-header">
+            <h3><i class="fas fa-edit"></i> Thêm Giao Dịch</h3>
+          </div>
+
+          <div class="transaction-tabs">
+            <button id="expense-tab" class="tab-btn active" data-type="expense">
+              <i class="fas fa-minus-circle"></i> Chi tiêu
+            </button>
+            <button id="income-tab" class="tab-btn" data-type="income">
+              <i class="fas fa-plus-circle"></i> Thu nhập
+            </button>
+          </div>
+
+          <form id="transactionForm" class="transaction-form">
+            <div class="form-group money-group">
+              <label>Số tiền</label>
+              <div class="input-with-icon">
+                <input
+                  type="number"
+                  id="transactionAmount"
+                  placeholder="0"
+                  required
+                  min="1000"
+                  step="1000"
+                />
+                <span class="currency-label">VNĐ</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group half">
+                <label><i class="fas fa-list"></i> Danh mục</label>
+                <select id="transactionCategory" required>
+                  <option value="">-- Chọn --</option>
+                </select>
+              </div>
+
+              <div class="form-group half">
+                <label><i class="fas fa-calendar-alt"></i> Ngày</label>
+                <input type="date" id="transactionDate" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label><i class="fas fa-pen"></i> Ghi chú</label>
+              <input
+                type="text"
+                id="transactionDescription"
+                placeholder="Ví dụ: Ăn sáng, Lương tháng 1..."
+                maxlength="100"
+              />
+            </div>
+
+            <div id="transactionMessage" class="form-message"></div>
+
+            <button type="submit" id="btnSubmit" class="submit-btn">
+              <i class="fas fa-check"></i> Lưu Giao Dịch
+            </button>
+          </form>
+        </div>
+
+        <div class="charts">
+          <div class="chart-card">
+            <h3><i class="fas fa-chart-pie"></i> Chi tiêu theo danh mục</h3>
+            <div id="categoryChartContainer">
+              <canvas id="categoryChart"></canvas>
+              <p id="categoryChartEmpty" class="empty-message" style="display: none;">
+                Chưa có dữ liệu chi tiêu để hiển thị
+              </p>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3><i class="fas fa-chart-bar"></i> Thu/Chi theo tháng</h3>
+            <div id="monthlyChartContainer">
+              <canvas id="monthlyChart"></canvas>
+              <p id="monthlyChartEmpty" class="empty-message" style="display: none;">
+                Chưa có dữ liệu giao dịch để hiển thị
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <i class="fas fa-cog settings-icon"></i>
+        <i class="fas fa-user-circle profile-icon"></i>
+      </main>
+    </div>
+
+    <script src="../src/js/transaction.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../src/js/dashboard.js"></script>
+  </body>
+</html>
