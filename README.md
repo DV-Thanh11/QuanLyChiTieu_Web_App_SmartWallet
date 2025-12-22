@@ -11,7 +11,7 @@ Dự án được phát triển theo mô hình Back-end API (Flask, Python) và 
 **Các Chức năng Đã Hoàn thành (User Stories - US):**
 
 * **[US01]** Đăng ký/Đăng nhập người dùng (Lưu trữ bằng MySQL, Mật khẩu được mã hóa an toàn).
-* **[US02]** Thực hiện giao dịch (Thu nhập/Chi tiêu). (Chưa triển khai)
+* **[US02]** Thực hiện giao dịch (Thu nhập/Chi tiêu).
 * **[US03]** Xem tổng quan (Dashboard) và thống kê chi tiêu. (Chưa triển khai)
 * **[US04]** Xem trạng thái đăng nhập và đăng xuất(Chưa triển khai)
 
