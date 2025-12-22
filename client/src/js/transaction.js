@@ -97,15 +97,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Lấy user_id từ localStorage (được lưu sau khi login thành công)
     const user_id = localStorage.getItem("user_id");
-
     if (!amount || amount <= 0) {
       showMessage("Lỗi: Số tiền không hợp lệ.", "error");
       return;
     }
     if (!category_id || category_id === "") {
-    showMessage("Lỗi: Vui lòng chọn một danh mục.", "error");
-    return;
+      showMessage("Lỗi: Vui lòng chọn một danh mục.", "error");
+      return;
     }
+
     // 1) Cập nhật ngay phần Tổng Thu / Tổng Chi / Số Dư theo số tiền người dùng nhập
     //    (hoạt động kể cả khi chưa có backend hoặc chưa đăng nhập)
     try {
@@ -124,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
       dateInput.valueAsDate = new Date();
       return;
     }
-
     showMessage("Đang ghi nhận giao dịch...", "success");
 
     try {
@@ -392,7 +391,6 @@ function updateOverviewClientSide(type, amount) {
     balanceEl.style.color = "#e74c3c";
   }
 }
-
 async function updateUIAfterChange(user_id) {
   if (!user_id) return;
   const bal = await getBalanceForUser(user_id);
