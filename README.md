@@ -12,8 +12,12 @@ Dự án được phát triển theo mô hình Back-end API (Flask, Python) và 
 
 * **[US01]** Đăng ký/Đăng nhập người dùng (Lưu trữ bằng MySQL, Mật khẩu được mã hóa an toàn).
 * **[US02]** Thực hiện giao dịch (Thu nhập/Chi tiêu).
-* **[US03]** Xem tổng quan (Dashboard) và thống kê chi tiêu. (Chưa triển khai)
-* **[US04]** Xem trạng thái đăng nhập và đăng xuất(Chưa triển khai)
+* **[US03]** Xem tổng quan (Dashboard) và thống kê chi tiêu.
+  - Tổng quan số liệu: Tổng Thu, Tổng Chi, Số Dư
+  - Biểu đồ tròn: Chi tiêu theo danh mục
+  - Biểu đồ cột: Thu/Chi theo tháng
+  - Tự động cập nhật khi có giao dịch mới
+* **[US04]** Xem trạng thái đăng nhập và đăng xuất (Chưa triển khai)
 
 ---
 
@@ -25,6 +29,7 @@ Dự án được phát triển theo mô hình Back-end API (Flask, Python) và 
 | **Back-end (BE)** | Python, Flask | Xây dựng RESTful API. |
 | **Database (DB)** | MySQL | Lưu trữ dữ liệu người dùng và giao dịch. |
 | **Bảo mật** | bcrypt, python-dotenv | Mã hóa mật khẩu, quản lý biến môi trường an toàn. |
+| **Visualization** | Chart.js | Hiển thị biểu đồ thống kê chi tiêu. |
 
 ---
 
@@ -87,7 +92,37 @@ Dự án được phát triển theo mô hình Back-end API (Flask, Python) và 
 ---
 
 ## 📂 4. Cấu trúc Thư mục Chính
-SmartWallet/ ├── client/ │ ├── public/ # Chứa file HTML chính (index.html, dashboard.html) │ └── src/ # Tài nguyên (CSS, JS) │ ├── css/ │ └── js/ ├── server/ │ ├── api/ # Chứa routes API (auth_routes.py, transaction_routes.py) │ ├── database/ # Logic kết nối và khởi tạo DB (init_db.py) │ └── app.py # Khởi động Flask App ├── docs/ │ └── DATABASE_SCHEMA.sql # Schema MySQL ├── .env # File chứa biến môi trường (Bị Git bỏ qua) ├── .gitignore # Danh sách file Git bỏ qua ├── requirements.txt # Danh sách thư viện Python └── README.md # Tài liệu này
+
+```
+SmartWallet/
+├── client/
+│   ├── public/              # Chứa file HTML chính
+│   │   ├── index.html       # Trang đăng nhập/đăng ký
+│   │   ├── dashboard.html   # Dashboard chính (US03)
+│   │   └── dashboard_demo.html  # Trang demo với dữ liệu mẫu
+│   └── src/                 # Tài nguyên (CSS, JS)
+│       ├── css/
+│       │   └── style.css    # Styling cho toàn bộ ứng dụng
+│       └── js/
+│           ├── auth.js      # Logic đăng nhập/đăng ký
+│           ├── dashboard.js # Logic dashboard và biểu đồ (US03)
+│           └── transaction.js # Logic giao dịch
+├── server/
+│   ├── api/                 # Chứa routes API
+│   │   ├── auth_routes.py   # API đăng nhập/đăng ký
+│   │   ├── transaction_routes.py # API giao dịch và thống kê
+│   │   └── admin_routes.py
+│   ├── database/
+│   │   └── init_db.py       # Logic kết nối và khởi tạo DB
+│   └── app.py               # Khởi động Flask App
+├── docs/
+│   ├── DATABASE_SCHEMA.sql  # Schema MySQL
+│   └── USER_STRORIES.md     # User Stories
+├── .env                     # File chứa biến môi trường (Bị Git bỏ qua)
+├── .gitignore               # Danh sách file Git bỏ qua
+├── requirements.txt         # Danh sách thư viện Python
+└── README.md               # Tài liệu này
+```
 ## 🤝 5. Đóng góp
 
 *(Phần này dùng để hướng dẫn những người khác nếu họ muốn thêm code vào dự án của bạn).*
