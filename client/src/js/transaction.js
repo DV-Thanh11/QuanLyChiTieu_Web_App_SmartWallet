@@ -144,106 +144,100 @@ document.addEventListener("DOMContentLoaded", () => {
   // Đặt ngày hiện tại làm mặc định
   dateInput.valueAsDate = new Date();
 
-  // --- Xử lý Submit Form ---
-  form.addEventListener("submit", async (e) => {
+// --- Xử lý Submit Form ---
+form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    // 1. Thu thập và kiểm tra dữ liệu đầu vào
     const amount = parseFloat(amountInput.value);
     const description = descriptionInput.value;
     const transaction_date = dateInput.value;
     const category_id = categorySelect.value;
-
-    // Lấy user_id từ localStorage (được lưu sau khi login thành công)
     const user_id = localStorage.getItem("user_id");
-    if (!amount || amount <= 0) {
-      showMessage("Lỗi: Số tiền không hợp lệ.", "error");
-      return;
+
+    if (isNaN(amount) || amount <= 0) {
+        showMessage("Lỗi: Số tiền không hợp lệ.", "error");
+        return;
     }
-    if (!category_id || category_id === "") {
-      showMessage("Lỗi: Vui lòng chọn một danh mục.", "error");
-      return;
-<<<<<<< HEAD
-=======
+    if (!category_id) {
+        showMessage("Lỗi: Vui lòng chọn một danh mục.", "error");
+        return;
     }
 
-    // 1) Cập nhật ngay phần Tổng Thu / Tổng Chi / Số Dư theo số tiền người dùng nhập
-    //    (hoạt động kể cả khi chưa có backend hoặc chưa đăng nhập)
+    // 2. Cập nhật giao diện tạm thời (Optimistic UI)
+    // Giúp app cảm giác nhanh hơn ngay cả khi mạng chậm
     updateOverviewClientSide(currentType, amount);
 
-    // 2) Nếu không có user_id → chạy như chế độ "máy tính" chỉ tính trên giao diện, không gọi API
+    // 3. Chế độ không đăng nhập (Offline/Calculator mode)
     if (!user_id) {
-      showMessage(
-        "Đã tính toán Thu/Chi/Số dư trên giao diện (chưa lưu vào hệ thống vì thiếu User ID).",
-        "success"
-      );
-      form.reset();
-      dateInput.valueAsDate = new Date();
-      return;
->>>>>>> fe954ec7f6b09a92b0bb9e1788c5d9f78958e75d
+        showMessage("Đã tính toán trên giao diện (Chưa lưu vì chưa đăng nhập).", "success");
+        form.reset();
+        dateInput.valueAsDate = new Date();
+        return;
     }
+
+    // 4. Gọi API lưu vào Database
     showMessage("Đang ghi nhận giao dịch...", "success");
 
     try {
-      const response = await fetch(`${API_BASE_URL}/transactions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: user_id,
-          type: currentType,
-          amount: amount,
-          description: description,
-          transaction_date: transaction_date,
-          category_id: category_id,
-        }),
-      });
+        const response = await fetch(`${API_BASE_URL}/transactions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                user_id,
+                type: currentType,
+                amount,
+                description,
+                transaction_date,
+                category_id,
+            }),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (response.ok) {
-        showMessage(`Ghi nhận ${currentType} thành công!`, "success");
-        form.reset();
-        dateInput.valueAsDate = new Date(); // Reset ngày về ngày hiện tại
-        
-        // Cập nhật lại US03 từ backend để đảm bảo đồng bộ (sau khi đã cập nhật client-side ở trên)
-        try {
-          await updateUIAfterChange(user_id);
-<<<<<<< HEAD
-          // Làm mới dashboard nếu hàm có sẵn (từ dashboard.js)
-          if (typeof window.refreshDashboard === "function") {
-=======
-          // Làm mới dashboard để cập nhật US03 từ dữ liệu thật của backend
-          if (typeof window.refreshDashboard === 'function') {
->>>>>>> fe954ec7f6b09a92b0bb9e1788c5d9f78958e75d
+        if (response.ok) {
+            showMessage(`Ghi nhận ${currentType} thành công!`, "success");
+            form.reset();
+            dateInput.valueAsDate = new Date();
+
+            // 5. Đồng bộ lại dữ liệu chuẩn từ Server
+            await syncDataFromServer(user_id);
+        } else {
+            showMessage("Lỗi Server: " + result.message, "error");
+            // Tùy chọn: Có thể hoàn tác (rollback) lại UI nếu API lỗi ở đây
+        }
+    } catch (error) {
+        console.error("Lỗi kết nối API:", error);
+        showMessage("Lỗi kết nối Server. Vui lòng kiểm tra Back-end.", "error");
+    }
+});
+
+// Hàm bổ trợ để dọn dẹp logic cập nhật UI
+async function syncDataFromServer(user_id) {
+    try {
+        // Ưu tiên dùng refreshDashboard nếu có (thường dùng cho biểu đồ, bảng)
+        if (typeof window.refreshDashboard === "function") {
             await window.refreshDashboard(user_id);
-          } else {
-            // Nếu không có refreshDashboard, vẫn cập nhật US03 từ balance API
+        } else {
+            // Nếu không có, cập nhật thủ công các thẻ số dư
             const bal = await getBalanceForUser(user_id);
             if (bal) {
-              const incomeEl = document.getElementById("totalIncome");
-              const expenseEl = document.getElementById("totalExpense");
-              const balanceEl = document.getElementById("mainBalance");
-              if (incomeEl) incomeEl.textContent = formatCurrency(bal.income || 0);
-              if (expenseEl) expenseEl.textContent = formatCurrency(bal.expense || 0);
-              if (balanceEl) {
-                balanceEl.textContent = formatCurrency(bal.balance || 0);
-                balanceEl.style.color = (bal.balance >= 0) ? "#27ae60" : "#e74c3c";
-              }
-            }
-          }
-        } catch (uiErr) {
-          console.error("Lỗi khi cập nhật UI sau khi tạo giao dịch:", uiErr);
-        }
-      } else {
-        showMessage("Lỗi Server: " + result.message, "error");
-      }
-    } catch (error) {
-      console.error("Lỗi kết nối API:", error);
-      showMessage("Lỗi kết nối Server. Vui lòng kiểm tra Back-end.", "error");
-    }
-  });
+                const incomeEl = document.getElementById("totalIncome");
+                const expenseEl = document.getElementById("totalExpense");
+                const balanceEl = document.getElementById("mainBalance");
 
+                if (incomeEl) incomeEl.textContent = formatCurrency(bal.income || 0);
+                if (expenseEl) expenseEl.textContent = formatCurrency(bal.expense || 0);
+                if (balanceEl) {
+                    balanceEl.textContent = formatCurrency(bal.balance || 0);
+                    balanceEl.style.color = (bal.balance >= 0) ? "#27ae60" : "#e74c3c";
+                }
+            }
+        }
+    } catch (err) {
+        console.error("Lỗi khi đồng bộ dữ liệu:", err);
+    }
+}
   // Khởi tạo trạng thái tab ban đầu
   switchTab("expense");
 });

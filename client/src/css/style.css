@@ -477,3 +477,247 @@ body {
     height: 250px;
   }
 }
+/* === 6. PHẦN HEADER ACTIONS (MENU & LOGOUT) === */
+
+/* Định vị khung chứa nút Menu và Logout nằm góc phải */
+.header-actions {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  display: flex;
+  gap: 15px; /* Khoảng cách giữa nút Menu và nút Đăng xuất */
+  align-items: center;
+}
+
+/* --- Style cho Nút Đăng Xuất (Đơn giản hóa) --- */
+.logout-btn {
+  background-color: transparent; /* Nền trong suốt */
+  color: #e74c3c; /* Màu chữ đỏ nhẹ */
+  border: 1px solid #e74c3c; /* Viền mỏng */
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logout-btn:hover {
+  background-color: #e74c3c;
+  color: #ffffff; /* Khi di chuột vào thì đổi nền đỏ, chữ trắng */
+}
+
+/* --- Style cho Nút Menu Dropdown --- */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.menu-btn {
+  background-color: #3498db; /* Màu xanh dương */
+  color: white;
+  padding: 9px 16px; /* Kích thước tương đương nút logout */
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-btn:hover {
+  background-color: #2980b9;
+}
+
+/* --- Nội dung Dropdown (Ẩn mặc định) --- */
+.dropdown-content {
+  display: none; /* Ẩn đi */
+  position: absolute;
+  right: 0; /* Canh lề phải thẳng hàng với nút */
+  background-color: #ffffff;
+  min-width: 220px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 100; /* Đè lên các thành phần khác */
+  border-radius: 8px;
+  padding: 10px 0;
+  border: 1px solid #eee;
+}
+
+/* Hiển thị menu khi di chuột vào nút .dropdown */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Các link bên trong menu */
+.dropdown-content a {
+  color: #333;
+  padding: 10px 20px;
+  text-decoration: none;
+  display: block;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+  color: #3498db;
+}
+
+.dropdown-content i {
+  width: 20px;
+  color: #7f8c8d;
+}
+
+/* Tiêu đề nhóm (Quản lý kế hoạch...) */
+.dropdown-group {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+.dropdown-group:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.group-title {
+  display: block;
+  padding: 5px 20px;
+  font-size: 0.75rem;
+  color: #95a5a6;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+/* --- US06: SAVINGS GOAL CSS --- */
+.saving-goal-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-left: 5px solid #3498db; /* Viền xanh bên trái */
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.saving-goal-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.saving-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.saving-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.saving-amounts {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* Thanh tiến độ */
+.progress-track {
+    width: 100%;
+    height: 10px;
+    background-color: #f0f2f5;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-delete-goal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.btn-delete-goal:hover {
+    opacity: 1;
+}
+/* --- CSS NÂNG CẤP GIAO DIỆN --- */
+
+/* 1. Card mục tiêu: Hiệu ứng nổi và bo góc */
+.savings-card {
+    background: #fff;
+    border-radius: 15px; /* Bo góc mềm mại */
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ */
+    transition: all 0.3s ease; /* Hiệu ứng mượt khi di chuột */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Khi di chuột vào thì thẻ bay lên nhẹ */
+.savings-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* 2. Trang trí thêm icon mờ phía sau */
+.card-icon-bg {
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    font-size: 80px;
+    color: rgba(0, 0, 0, 0.03); /* Rất mờ */
+    transform: rotate(-15deg);
+    z-index: 0;
+}
+
+/* 3. Thanh tiến độ đẹp hơn */
+.custom-progress {
+    height: 12px;
+    background-color: #e9ecef;
+    border-radius: 10px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.custom-progress-bar {
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); /* Màu Gradient xanh */
+    border-radius: 10px;
+    transition: width 1s ease-in-out;
+}
+
+/* Màu Gradient cho trạng thái hoàn thành */
+.bg-success-gradient {
+    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%) !important;
+}
+
+/* 4. Chỉnh lại chữ */
+.money-text {
+    font-family: 'Consolas', monospace; /* Phông chữ số nhìn chuyên nghiệp */
+    font-weight: 700;
+    color: #2c3e50;
+}

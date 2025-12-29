@@ -1,171 +1,161 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard | SmartWallet</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
-    <link rel="stylesheet" href="../src/css/style.css" />
-  </head>
-  <body>
-    <div id="dashboard-container">
-      <aside id="sidebar-panel">
-        <header class="balance-header">
-          <h2>Tổng quan số dư</h2>
-          <p id="totalBalance" class="balance-amount">0</p>
-        </header>
-        <h3>Giao dịch</h3>
-        <ul id="notificationList" class="notification-list"></ul>
-      </aside>
 
-      <main id="main-content">
-        <div class="profile-area">
-          <span id="profileName" class="profile-name"></span>
-          <button id="btnLogout" class="logout-btn">Đăng xuất</button>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | SmartWallet</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="../src/css/style.css" />
+</head>
 
-        <!-- Phần Tổng quan số liệu -->
-        <div class="stats-overview">
-          <div class="stat-card income-card">
-            <div class="stat-icon">
-              <i class="fas fa-arrow-up"></i>
-            </div>
-            <div class="stat-info">
-              <h4>Tổng Thu</h4>
-              <p id="totalIncome" class="stat-value">0đ</p>
+<body>
+  <div id="dashboard-container">
+    <aside id="sidebar-panel">
+      <header class="balance-header">
+        <h2>Tổng quan số dư</h2>
+        <p id="totalBalance" class="balance-amount">0</p>
+      </header>
+      <h3>Giao dịch</h3>
+      <ul id="notificationList" class="notification-list"></ul>
+    </aside>
+
+    <main id="main-content">
+
+      <div class="header-actions">
+          <div class="dropdown">
+            <button class="menu-btn">
+              <i class="fas fa-th-large"></i> Tiện ích
+            </button>
+            <div class="dropdown-content">
+              <div class="dropdown-group">
+                <span class="group-title">Quản lý kế hoạch</span>
+                <a href="ngansach.html"><i class="fas fa-wallet"></i> Ngân sách chi tiêu</a>
+                <a href="tietkiem.html"><i class="fas fa-piggy-bank"></i> Mục tiêu tiết kiệm</a>
+              </div>
+              <div class="dropdown-group">
+                <span class="group-title">Quản lý giao dịch</span>
+                <a href="gddk.html"><i class="fas fa-sync-alt"></i> Giao dịch định kỳ</a>
+              </div>
             </div>
           </div>
-          <div class="stat-card expense-card">
-            <div class="stat-icon">
-              <i class="fas fa-arrow-down"></i>
-            </div>
-            <div class="stat-info">
-              <h4>Tổng Chi</h4>
-              <p id="totalExpense" class="stat-value">0đ</p>
-            </div>
+          <button id="btnLogout" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+          </button>
+      </div>
+      <!-- Phần Tổng quan số liệu -->
+      <div class="stats-overview">
+        <div class="stat-card income-card">
+          <div class="stat-icon">
+            <i class="fas fa-arrow-up"></i>
           </div>
-          <div class="stat-card balance-card">
-            <div class="stat-icon">
-              <i class="fas fa-wallet"></i>
-            </div>
-            <div class="stat-info">
-              <h4>Số Dư</h4>
-              <p id="mainBalance" class="stat-value">0đ</p>
-            </div>
+          <div class="stat-info">
+            <h4>Tổng Thu</h4>
+            <p id="totalIncome" class="stat-value">0đ</p>
           </div>
         </div>
+        <div class="stat-card expense-card">
+          <div class="stat-icon">
+            <i class="fas fa-arrow-down"></i>
+          </div>
+          <div class="stat-info">
+            <h4>Tổng Chi</h4>
+            <p id="totalExpense" class="stat-value">0đ</p>
+          </div>
+        </div>
+        <div class="stat-card balance-card">
+          <div class="stat-icon">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <div class="stat-info">
+            <h4>Số Dư</h4>
+            <p id="mainBalance" class="stat-value">0đ</p>
+          </div>
+        </div>
+        
+      </div>
 
-        <div id="transaction-entry-panel" class="transaction-card">
-          <div class="card-header">
-            <h3><i class="fas fa-edit"></i> Thêm Giao Dịch</h3>
-            <span
-              id="storageMode"
-              style="
+      <div id="transaction-entry-panel" class="transaction-card">
+        <div class="card-header">
+          <h3><i class="fas fa-edit"></i> Thêm Giao Dịch</h3>
+          <span id="storageMode" style="
                 font-size: 12px;
                 padding: 4px 8px;
                 border-radius: 4px;
                 margin-left: 10px;
-              "
-            ></span>
-          </div>
-
-          <div class="transaction-tabs">
-            <button id="expense-tab" class="tab-btn active" data-type="expense">
-              <i class="fas fa-minus-circle"></i> Chi tiêu
-            </button>
-            <button id="income-tab" class="tab-btn" data-type="income">
-              <i class="fas fa-plus-circle"></i> Thu nhập
-            </button>
-          </div>
-
-          <form id="transactionForm" class="transaction-form">
-            <div class="form-group money-group">
-              <label>Số tiền</label>
-              <div class="input-with-icon">
-                <input
-                  type="number"
-                  id="transactionAmount"
-                  placeholder="0"
-                  required
-                  min="1000"
-                  step="1000"
-                />
-                <span class="currency-label">VNĐ</span>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group half">
-                <label><i class="fas fa-list"></i> Danh mục</label>
-                <select id="transactionCategory" required>
-                  <option value="">-- Chọn --</option>
-                </select>
-              </div>
-
-              <div class="form-group half">
-                <label><i class="fas fa-calendar-alt"></i> Ngày</label>
-                <input type="date" id="transactionDate" required />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label><i class="fas fa-pen"></i> Ghi chú</label>
-              <input
-                type="text"
-                id="transactionDescription"
-                placeholder="Ví dụ: Ăn sáng, Lương tháng 1..."
-                maxlength="100"
-              />
-            </div>
-
-            <div id="transactionMessage" class="form-message"></div>
-
-            <button type="submit" id="btnSubmit" class="submit-btn">
-              <i class="fas fa-check"></i> Lưu Giao Dịch
-            </button>
-          </form>
+              "></span>
         </div>
 
-        <div class="charts">
-          <div class="chart-card">
-            <h3><i class="fas fa-chart-pie"></i> Chi tiêu theo danh mục</h3>
-            <div id="categoryChartContainer">
-              <canvas id="categoryChart"></canvas>
-              <p
-                id="categoryChartEmpty"
-                class="empty-message"
-                style="display: none"
-              >
-                Chưa có dữ liệu chi tiêu để hiển thị
-              </p>
-            </div>
-          </div>
-          <div class="chart-card">
-            <h3><i class="fas fa-chart-bar"></i> Thu/Chi theo tháng</h3>
-            <div id="monthlyChartContainer">
-              <canvas id="monthlyChart"></canvas>
-              <p
-                id="monthlyChartEmpty"
-                class="empty-message"
-                style="display: none"
-              >
-                Chưa có dữ liệu giao dịch để hiển thị
-              </p>
-            </div>
-          </div>
+        <div class="transaction-tabs">
+          <button id="expense-tab" class="tab-btn active" data-type="expense">
+            <i class="fas fa-minus-circle"></i> Chi tiêu
+          </button>
+          <button id="income-tab" class="tab-btn" data-type="income">
+            <i class="fas fa-plus-circle"></i> Thu nhập
+          </button>
         </div>
 
-        <!-- Nút xóa dữ liệu (chỉ hiện khi dùng localStorage) -->
-        <div
-          id="localStorageActions"
-          style="text-align: center; margin-top: 20px; display: none"
-        >
-          <button
-            id="btnClearData"
-            style="
+        <form id="transactionForm" class="transaction-form">
+          <div class="form-group money-group">
+            <label>Số tiền</label>
+            <div class="input-with-icon">
+              <input type="number" id="transactionAmount" placeholder="0" required min="1000" step="1000" />
+              <span class="currency-label">VNĐ</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label><i class="fas fa-list"></i> Danh mục</label>
+              <select id="transactionCategory" required>
+                <option value="">-- Chọn --</option>
+              </select>
+            </div>
+
+            <div class="form-group half">
+              <label><i class="fas fa-calendar-alt"></i> Ngày</label>
+              <input type="date" id="transactionDate" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-pen"></i> Ghi chú</label>
+            <input type="text" id="transactionDescription" placeholder="Ví dụ: Ăn sáng, Lương tháng 1..."
+              maxlength="100" />
+          </div>
+
+          <div id="transactionMessage" class="form-message"></div>
+
+          <button type="submit" id="btnSubmit" class="submit-btn">
+            <i class="fas fa-check"></i> Lưu Giao Dịch
+          </button>
+        </form>
+      </div>
+
+      <div class="charts">
+        <div class="chart-card">
+          <h3><i class="fas fa-chart-pie"></i> Chi tiêu theo danh mục</h3>
+          <div id="categoryChartContainer">
+            <canvas id="categoryChart"></canvas>
+            <p id="categoryChartEmpty" class="empty-message" style="display: none">
+              Chưa có dữ liệu chi tiêu để hiển thị
+            </p>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3><i class="fas fa-chart-bar"></i> Thu/Chi theo tháng</h3>
+          <div id="monthlyChartContainer">
+            <canvas id="monthlyChart"></canvas>
+            <p id="monthlyChartEmpty" class="empty-message" style="display: none">
+              Chưa có dữ liệu giao dịch để hiển thị
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nút xóa dữ liệu (chỉ hiện khi dùng localStorage) -->
+      <div id="localStorageActions" style="text-align: center; margin-top: 20px; display: none">
+        <button id="btnClearData" style="
               padding: 10px 20px;
               background: #e74c3c;
               color: white;
@@ -173,13 +163,10 @@
               border-radius: 6px;
               cursor: pointer;
               font-size: 14px;
-            "
-          >
-            <i class="fas fa-trash"></i> Xóa toàn bộ dữ liệu
-          </button>
-          <button
-            id="btnExportData"
-            style="
+            ">
+          <i class="fas fa-trash"></i> Xóa toàn bộ dữ liệu
+        </button>
+        <button id="btnExportData" style="
               padding: 10px 20px;
               background: #3498db;
               color: white;
@@ -188,717 +175,709 @@
               cursor: pointer;
               font-size: 14px;
               margin-left: 10px;
-            "
-          >
-            <i class="fas fa-download"></i> Xuất JSON
-          </button>
-        </div>
+            ">
+          <i class="fas fa-download"></i> Xuất JSON
+        </button>
+      </div>
 
-        <i class="fas fa-cog settings-icon"></i>
-        <i class="fas fa-user-circle profile-icon"></i>
-      </main>
-    </div>
 
-    <!-- Load Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </div>
 
-    <!-- SmartWallet Local Storage Manager -->
-    <script>
-      // ============================================
-      // SMARTWALLET - LOCAL STORAGE DATA MANAGER
-      // Lưu dữ liệu vào JSON với định danh user
-      // Fallback khi không kết nối được MySQL
-      // ============================================
+  <!-- Load Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-      const API_BASE_URL = "http://127.0.0.1:5000/api";
-      let categoryChart = null;
-      let monthlyChart = null;
-      let currentType = "expense";
-      let useLocalStorage = false; // Mặc định thử dùng API trước
+  <!-- SmartWallet Local Storage Manager -->
+  <script>
+    // ============================================
+    // SMARTWALLET - LOCAL STORAGE DATA MANAGER
+    // Lưu dữ liệu vào JSON với định danh user
+    // Fallback khi không kết nối được MySQL
+    // ============================================
 
-      // ===== DANH MỤC MẶC ĐỊNH =====
-      const DEFAULT_CATEGORIES = {
-        expense: [
-          { category_id: 1, name: "Ăn uống", type: "expense" },
-          { category_id: 2, name: "Di chuyển", type: "expense" },
-          { category_id: 3, name: "Mua sắm", type: "expense" },
-          { category_id: 4, name: "Giải trí", type: "expense" },
-          { category_id: 5, name: "Tiền nhà/Phòng", type: "expense" },
-          { category_id: 6, name: "Học tập/Phí", type: "expense" },
-          { category_id: 7, name: "Sức khỏe", type: "expense" },
-          { category_id: 8, name: "Khác", type: "expense" },
-        ],
-        income: [
-          { category_id: 101, name: "Lương", type: "income" },
-          { category_id: 102, name: "Thưởng", type: "income" },
-          { category_id: 103, name: "Phụ cấp", type: "income" },
-          { category_id: 104, name: "Freelance", type: "income" },
-          { category_id: 105, name: "Đầu tư", type: "income" },
-          { category_id: 106, name: "Khoản thu khác", type: "income" },
-        ],
-      };
+    const API_BASE_URL = "http://127.0.0.1:5000/api";
+    let categoryChart = null;
+    let monthlyChart = null;
+    let currentType = "expense";
+    let useLocalStorage = false; // Mặc định thử dùng API trước
 
-      // ===== TIỆN ÍCH =====
-      function formatCurrency(amount) {
-        return new Intl.NumberFormat("vi-VN").format(Math.abs(amount)) + "đ";
+    // ===== DANH MỤC MẶC ĐỊNH =====
+    const DEFAULT_CATEGORIES = {
+      expense: [
+        { category_id: 6, name: "Ăn uống", type: "expense" },
+        { category_id: 8, name: "Di chuyển", type: "expense" },
+        { category_id: 9, name: "Mua sắm", type: "expense" },
+        { category_id: 11, name: "Giải trí", type: "expense" },
+        { category_id: 7, name: "Tiền nhà/Phòng", type: "expense" },
+        { category_id: 10, name: "Học tập/Phí", type: "expense" },
+        { category_id: 67, name: "Đầu Tư Và Tiết Kiệm", type: "expense" },
+      ],
+      income: [
+        { category_id: 1, name: "Lương", type: "income" },
+        { category_id: 2, name: "Thưởng", type: "income" },
+        { category_id: 3, name: "Phụ cấp", type: "income" },
+        { category_id: 4, name: "Thu nhập ngoài(Freelance)", type: "income" },
+        { category_id: 5, name: "Khoản thu khác", type: "income" },
+      ],
+    };
+
+    // ===== TIỆN ÍCH =====
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat("vi-VN").format(Math.abs(amount)) + "đ";
+    }
+
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    function getUserId() {
+      let userId = localStorage.getItem("user_id");
+      if (!userId) {
+        // Tạo user_id mới nếu chưa có (demo mode)
+        userId = "demo_" + generateId();
+        localStorage.setItem("user_id", userId);
+        localStorage.setItem("user_name", "Người dùng Demo");
       }
+      return userId;
+    }
 
-      function generateId() {
-        return Date.now().toString(36) + Math.random().toString(36).substr(2);
-      }
+    function getStorageKey(userId) {
+      return `smartwallet_transactions_${userId}`;
+    }
 
-      function getUserId() {
-        let userId = localStorage.getItem("user_id");
-        if (!userId) {
-          // Tạo user_id mới nếu chưa có (demo mode)
-          userId = "demo_" + generateId();
-          localStorage.setItem("user_id", userId);
-          localStorage.setItem("user_name", "Người dùng Demo");
-        }
-        return userId;
-      }
+    // ===== LOCAL STORAGE CRUD =====
+    function getTransactionsFromStorage(userId) {
+      const key = getStorageKey(userId);
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : [];
+    }
 
-      function getStorageKey(userId) {
-        return `smartwallet_transactions_${userId}`;
-      }
+    function saveTransactionsToStorage(userId, transactions) {
+      const key = getStorageKey(userId);
+      localStorage.setItem(key, JSON.stringify(transactions));
+    }
 
-      // ===== LOCAL STORAGE CRUD =====
-      function getTransactionsFromStorage(userId) {
-        const key = getStorageKey(userId);
-        const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) : [];
-      }
+    function addTransactionToStorage(userId, transaction) {
+      const transactions = getTransactionsFromStorage(userId);
+      transaction.transaction_id = generateId();
+      transaction.created_at = new Date().toISOString();
+      transactions.unshift(transaction); // Thêm vào đầu danh sách
+      saveTransactionsToStorage(userId, transactions);
+      return transaction;
+    }
 
-      function saveTransactionsToStorage(userId, transactions) {
-        const key = getStorageKey(userId);
-        localStorage.setItem(key, JSON.stringify(transactions));
-      }
+    function deleteTransactionFromStorage(userId, transactionId) {
+      let transactions = getTransactionsFromStorage(userId);
+      transactions = transactions.filter(
+        (tx) => tx.transaction_id !== transactionId
+      );
+      saveTransactionsToStorage(userId, transactions);
+    }
 
-      function addTransactionToStorage(userId, transaction) {
-        const transactions = getTransactionsFromStorage(userId);
-        transaction.transaction_id = generateId();
-        transaction.created_at = new Date().toISOString();
-        transactions.unshift(transaction); // Thêm vào đầu danh sách
-        saveTransactionsToStorage(userId, transactions);
-        return transaction;
-      }
+    function clearAllTransactions(userId) {
+      const key = getStorageKey(userId);
+      localStorage.removeItem(key);
+    }
 
-      function deleteTransactionFromStorage(userId, transactionId) {
-        let transactions = getTransactionsFromStorage(userId);
-        transactions = transactions.filter(
-          (tx) => tx.transaction_id !== transactionId
-        );
-        saveTransactionsToStorage(userId, transactions);
-      }
+    // ===== TÍNH TOÁN THỐNG KÊ =====
+    function calculateStats(transactions) {
+      let totalIncome = 0;
+      let totalExpense = 0;
+      const categoryMap = {};
+      const monthMap = {};
 
-      function clearAllTransactions(userId) {
-        const key = getStorageKey(userId);
-        localStorage.removeItem(key);
-      }
+      transactions.forEach((tx) => {
+        const amount = Number(tx.amount) || 0;
 
-      // ===== TÍNH TOÁN THỐNG KÊ =====
-      function calculateStats(transactions) {
-        let totalIncome = 0;
-        let totalExpense = 0;
-        const categoryMap = {};
-        const monthMap = {};
-
-        transactions.forEach((tx) => {
-          const amount = Number(tx.amount) || 0;
-
-          // Tổng thu/chi
-          if (tx.type === "income") {
-            totalIncome += amount;
-          } else {
-            totalExpense += amount;
-          }
-
-          // Theo danh mục (chỉ expense)
-          if (tx.type === "expense" && tx.category_name) {
-            if (!categoryMap[tx.category_name]) {
-              categoryMap[tx.category_name] = 0;
-            }
-            categoryMap[tx.category_name] += amount;
-          }
-
-          // Theo tháng
-          if (tx.transaction_date) {
-            const date = new Date(tx.transaction_date);
-            const monthKey = `${date.getFullYear()}-${String(
-              date.getMonth() + 1
-            ).padStart(2, "0")}`;
-            if (!monthMap[monthKey]) {
-              monthMap[monthKey] = { income: 0, expense: 0 };
-            }
-            if (tx.type === "income") {
-              monthMap[monthKey].income += amount;
-            } else {
-              monthMap[monthKey].expense += amount;
-            }
-          }
-        });
-
-        // Convert to arrays
-        const byCategory = Object.entries(categoryMap).map(([name, total]) => ({
-          category: name,
-          total: total,
-        }));
-
-        const byMonth = Object.entries(monthMap)
-          .map(([month, data]) => ({
-            month: month,
-            income: data.income,
-            expense: data.expense,
-          }))
-          .sort((a, b) => a.month.localeCompare(b.month))
-          .slice(-6); // Lấy 6 tháng gần nhất
-
-        return {
-          totalIncome,
-          totalExpense,
-          balance: totalIncome - totalExpense,
-          byCategory,
-          byMonth,
-        };
-      }
-
-      // ===== VẼ BIỂU ĐỒ =====
-      const CHART_COLORS = [
-        "#e74c3c",
-        "#3498db",
-        "#2ecc71",
-        "#f39c12",
-        "#9b59b6",
-        "#1abc9c",
-        "#e67e22",
-        "#34495e",
-      ];
-
-      function renderCategoryChart(data) {
-        const ctx = document.getElementById("categoryChart");
-        const emptyMsg = document.getElementById("categoryChartEmpty");
-
-        if (!ctx) return;
-
-        if (!data || data.length === 0) {
-          if (categoryChart) {
-            categoryChart.destroy();
-            categoryChart = null;
-          }
-          ctx.style.display = "none";
-          if (emptyMsg) emptyMsg.style.display = "block";
-          return;
-        }
-
-        ctx.style.display = "block";
-        if (emptyMsg) emptyMsg.style.display = "none";
-
-        const labels = data.map((d) => d.category);
-        const values = data.map((d) => d.total);
-
-        if (categoryChart) categoryChart.destroy();
-
-        categoryChart = new Chart(ctx.getContext("2d"), {
-          type: "pie",
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                data: values,
-                backgroundColor: CHART_COLORS.slice(0, data.length),
-                borderWidth: 2,
-                borderColor: "#fff",
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-              legend: { position: "bottom" },
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    const total = context.dataset.data.reduce(
-                      (a, b) => a + b,
-                      0
-                    );
-                    const percentage = ((context.parsed / total) * 100).toFixed(
-                      1
-                    );
-                    return `${context.label}: ${formatCurrency(
-                      context.parsed
-                    )} (${percentage}%)`;
-                  },
-                },
-              },
-            },
-          },
-        });
-      }
-
-      function renderMonthlyChart(data) {
-        const ctx = document.getElementById("monthlyChart");
-        const emptyMsg = document.getElementById("monthlyChartEmpty");
-
-        if (!ctx) return;
-
-        if (!data || data.length === 0) {
-          if (monthlyChart) {
-            monthlyChart.destroy();
-            monthlyChart = null;
-          }
-          ctx.style.display = "none";
-          if (emptyMsg) emptyMsg.style.display = "block";
-          return;
-        }
-
-        ctx.style.display = "block";
-        if (emptyMsg) emptyMsg.style.display = "none";
-
-        const labels = data.map((d) => {
-          const [year, month] = d.month.split("-");
-          return `${month}/${year}`;
-        });
-
-        if (monthlyChart) monthlyChart.destroy();
-
-        monthlyChart = new Chart(ctx.getContext("2d"), {
-          type: "bar",
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: "Thu nhập",
-                data: data.map((d) => d.income),
-                backgroundColor: "rgba(46, 204, 113, 0.8)",
-                borderColor: "rgba(46, 204, 113, 1)",
-                borderWidth: 1,
-                borderRadius: 4,
-              },
-              {
-                label: "Chi tiêu",
-                data: data.map((d) => d.expense),
-                backgroundColor: "rgba(231, 76, 60, 0.8)",
-                borderColor: "rgba(231, 76, 60, 1)",
-                borderWidth: 1,
-                borderRadius: 4,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  callback: function (value) {
-                    if (value >= 1000000)
-                      return (value / 1000000).toFixed(0) + "tr";
-                    if (value >= 1000) return (value / 1000).toFixed(0) + "k";
-                    return value;
-                  },
-                },
-              },
-            },
-            plugins: {
-              legend: { position: "top" },
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    return `${context.dataset.label}: ${formatCurrency(
-                      context.parsed.y
-                    )}`;
-                  },
-                },
-              },
-            },
-          },
-        });
-      }
-
-      // ===== CẬP NHẬT GIAO DIỆN =====
-      function updateStatsDisplay(stats) {
-        const incomeEl = document.getElementById("totalIncome");
-        const expenseEl = document.getElementById("totalExpense");
-        const balanceEl = document.getElementById("mainBalance");
-        const sidebarBalanceEl = document.getElementById("totalBalance");
-
-        if (incomeEl) incomeEl.textContent = formatCurrency(stats.totalIncome);
-        if (expenseEl)
-          expenseEl.textContent = formatCurrency(stats.totalExpense);
-
-        if (balanceEl) {
-          balanceEl.textContent = formatCurrency(stats.balance);
-          balanceEl.style.color = stats.balance >= 0 ? "#27ae60" : "#e74c3c";
-        }
-
-        if (sidebarBalanceEl) {
-          const sign = stats.balance >= 0 ? "+" : "-";
-          sidebarBalanceEl.textContent = sign + formatCurrency(stats.balance);
-          sidebarBalanceEl.style.color =
-            stats.balance >= 0 ? "#27ae60" : "#e74c3c";
-        }
-      }
-
-      function updateNotificationList(transactions) {
-        const listEl = document.getElementById("notificationList");
-        const countBadge = document.getElementById("transaction-count");
-
-        if (!listEl) return;
-
-        listEl.innerHTML = "";
-
-        const latest = transactions.slice(0, 10); // 10 giao dịch gần nhất
-
-        if (latest.length === 0) {
-          const li = document.createElement("li");
-          li.style.cssText = "padding: 15px; text-align: center; color: #999;";
-          li.textContent = "Chưa có giao dịch nào";
-          listEl.appendChild(li);
+        // Tổng thu/chi
+        if (tx.type === "income") {
+          totalIncome += amount;
         } else {
-          latest.forEach((tx) => {
-            const li = document.createElement("li");
-            li.className = "notification-item";
-            li.dataset.txId = tx.transaction_id;
-            li.style.cssText =
-              "display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; gap: 8px;";
-
-            const isIncome = tx.type === "income";
-
-            // Type badge
-            const typeSpan = document.createElement("span");
-            typeSpan.style.cssText = `font-weight: bold; color: ${
-              isIncome ? "#27ae60" : "#e74c3c"
-            }; min-width: 40px; font-size: 12px;`;
-            typeSpan.textContent = isIncome ? "Thu+" : "Chi-";
-
-            // Description
-            const descSpan = document.createElement("span");
-            descSpan.style.cssText =
-              "flex: 1; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;";
-            const desc = tx.description || tx.category_name || "Giao dịch";
-            descSpan.textContent = `${desc} (${tx.transaction_date})`;
-            descSpan.title = desc;
-
-            // Amount
-            const amountSpan = document.createElement("span");
-            amountSpan.style.cssText = `font-weight: bold; color: ${
-              isIncome ? "#27ae60" : "#e74c3c"
-            }; font-size: 13px; min-width: 80px; text-align: right;`;
-            amountSpan.textContent =
-              (isIncome ? "+" : "-") + formatCurrency(tx.amount);
-
-            // Delete button
-            const delBtn = document.createElement("button");
-            delBtn.style.cssText =
-              "background: #ff6b6b; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;";
-            delBtn.textContent = "Xóa";
-            delBtn.onclick = async (e) => {
-              e.stopPropagation();
-              if (!confirm("Xác nhận xóa giao dịch này?")) return;
-
-              const userId = getUserId();
-              if (useLocalStorage) {
-                deleteTransactionFromStorage(userId, tx.transaction_id);
-              } else {
-                // Thử xóa qua API
-                try {
-                  await fetch(
-                    `${API_BASE_URL}/transactions/${tx.transaction_id}`,
-                    { method: "DELETE" }
-                  );
-                } catch (e) {
-                  deleteTransactionFromStorage(userId, tx.transaction_id);
-                }
-              }
-              refreshDashboard();
-            };
-
-            li.appendChild(typeSpan);
-            li.appendChild(descSpan);
-            li.appendChild(amountSpan);
-            li.appendChild(delBtn);
-            listEl.appendChild(li);
-          });
+          totalExpense += amount;
         }
 
-        if (countBadge) {
-          countBadge.textContent = transactions.length;
-          countBadge.style.cssText =
-            "background: #ff4757; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px;";
+        // Theo danh mục (chỉ expense)
+        if (tx.type === "expense" && tx.category_name) {
+          if (!categoryMap[tx.category_name]) {
+            categoryMap[tx.category_name] = 0;
+          }
+          categoryMap[tx.category_name] += amount;
         }
+
+        // Theo tháng
+        if (tx.transaction_date) {
+          const date = new Date(tx.transaction_date);
+          const monthKey = `${date.getFullYear()}-${String(
+            date.getMonth() + 1
+          ).padStart(2, "0")}`;
+          if (!monthMap[monthKey]) {
+            monthMap[monthKey] = { income: 0, expense: 0 };
+          }
+          if (tx.type === "income") {
+            monthMap[monthKey].income += amount;
+          } else {
+            monthMap[monthKey].expense += amount;
+          }
+        }
+      });
+
+      // Convert to arrays
+      const byCategory = Object.entries(categoryMap).map(([name, total]) => ({
+        category: name,
+        total: total,
+      }));
+
+      const byMonth = Object.entries(monthMap)
+        .map(([month, data]) => ({
+          month: month,
+          income: data.income,
+          expense: data.expense,
+        }))
+        .sort((a, b) => a.month.localeCompare(b.month))
+        .slice(-6); // Lấy 6 tháng gần nhất
+
+      return {
+        totalIncome,
+        totalExpense,
+        balance: totalIncome - totalExpense,
+        byCategory,
+        byMonth,
+      };
+    }
+
+    // ===== VẼ BIỂU ĐỒ =====
+    const CHART_COLORS = [
+      "#e74c3c",
+      "#3498db",
+      "#2ecc71",
+      "#f39c12",
+      "#9b59b6",
+      "#1abc9c",
+      "#e67e22",
+      "#34495e",
+    ];
+
+    function renderCategoryChart(data) {
+      const ctx = document.getElementById("categoryChart");
+      const emptyMsg = document.getElementById("categoryChartEmpty");
+
+      if (!ctx) return;
+
+      if (!data || data.length === 0) {
+        if (categoryChart) {
+          categoryChart.destroy();
+          categoryChart = null;
+        }
+        ctx.style.display = "none";
+        if (emptyMsg) emptyMsg.style.display = "block";
+        return;
       }
 
-      function loadCategories(type) {
-        const categorySelect = document.getElementById("transactionCategory");
-        if (!categorySelect) return;
+      ctx.style.display = "block";
+      if (emptyMsg) emptyMsg.style.display = "none";
 
-        categorySelect.innerHTML =
-          '<option value="">-- Chọn Danh mục --</option>';
+      const labels = data.map((d) => d.category);
+      const values = data.map((d) => d.total);
 
-        const categories = DEFAULT_CATEGORIES[type] || [];
-        categories.forEach((cat) => {
-          const option = document.createElement("option");
-          option.value = cat.category_id;
-          option.textContent = cat.name;
-          option.dataset.name = cat.name;
-          categorySelect.appendChild(option);
+      if (categoryChart) categoryChart.destroy();
+
+      categoryChart = new Chart(ctx.getContext("2d"), {
+        type: "pie",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              data: values,
+              backgroundColor: CHART_COLORS.slice(0, data.length),
+              borderWidth: 2,
+              borderColor: "#fff",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { position: "bottom" },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  const total = context.dataset.data.reduce(
+                    (a, b) => a + b,
+                    0
+                  );
+                  const percentage = ((context.parsed / total) * 100).toFixed(
+                    1
+                  );
+                  return `${context.label}: ${formatCurrency(
+                    context.parsed
+                  )} (${percentage}%)`;
+                },
+              },
+            },
+          },
+        },
+      });
+    }
+
+    function renderMonthlyChart(data) {
+      const ctx = document.getElementById("monthlyChart");
+      const emptyMsg = document.getElementById("monthlyChartEmpty");
+
+      if (!ctx) return;
+
+      if (!data || data.length === 0) {
+        if (monthlyChart) {
+          monthlyChart.destroy();
+          monthlyChart = null;
+        }
+        ctx.style.display = "none";
+        if (emptyMsg) emptyMsg.style.display = "block";
+        return;
+      }
+
+      ctx.style.display = "block";
+      if (emptyMsg) emptyMsg.style.display = "none";
+
+      const labels = data.map((d) => {
+        const [year, month] = d.month.split("-");
+        return `${month}/${year}`;
+      });
+
+      if (monthlyChart) monthlyChart.destroy();
+
+      monthlyChart = new Chart(ctx.getContext("2d"), {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Thu nhập",
+              data: data.map((d) => d.income),
+              backgroundColor: "rgba(46, 204, 113, 0.8)",
+              borderColor: "rgba(46, 204, 113, 1)",
+              borderWidth: 1,
+              borderRadius: 4,
+            },
+            {
+              label: "Chi tiêu",
+              data: data.map((d) => d.expense),
+              backgroundColor: "rgba(231, 76, 60, 0.8)",
+              borderColor: "rgba(231, 76, 60, 1)",
+              borderWidth: 1,
+              borderRadius: 4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function (value) {
+                  if (value >= 1000000)
+                    return (value / 1000000).toFixed(0) + "tr";
+                  if (value >= 1000) return (value / 1000).toFixed(0) + "k";
+                  return value;
+                },
+              },
+            },
+          },
+          plugins: {
+            legend: { position: "top" },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  return `${context.dataset.label}: ${formatCurrency(
+                    context.parsed.y
+                  )}`;
+                },
+              },
+            },
+          },
+        },
+      });
+    }
+
+    // ===== CẬP NHẬT GIAO DIỆN =====
+    function updateStatsDisplay(stats) {
+      const incomeEl = document.getElementById("totalIncome");
+      const expenseEl = document.getElementById("totalExpense");
+      const balanceEl = document.getElementById("mainBalance");
+      const sidebarBalanceEl = document.getElementById("totalBalance");
+
+      if (incomeEl) incomeEl.textContent = formatCurrency(stats.totalIncome);
+      if (expenseEl)
+        expenseEl.textContent = formatCurrency(stats.totalExpense);
+
+      if (balanceEl) {
+        balanceEl.textContent = formatCurrency(stats.balance);
+        balanceEl.style.color = stats.balance >= 0 ? "#27ae60" : "#e74c3c";
+      }
+
+      if (sidebarBalanceEl) {
+        const sign = stats.balance >= 0 ? "+" : "-";
+        sidebarBalanceEl.textContent = sign + formatCurrency(stats.balance);
+        sidebarBalanceEl.style.color =
+          stats.balance >= 0 ? "#27ae60" : "#e74c3c";
+      }
+    }
+
+    function updateNotificationList(transactions) {
+      const listEl = document.getElementById("notificationList");
+      const countBadge = document.getElementById("transaction-count");
+
+      if (!listEl) return;
+
+      listEl.innerHTML = "";
+
+      const latest = transactions.slice(0, 10); // 10 giao dịch gần nhất
+
+      if (latest.length === 0) {
+        const li = document.createElement("li");
+        li.style.cssText = "padding: 15px; text-align: center; color: #999;";
+        li.textContent = "Chưa có giao dịch nào";
+        listEl.appendChild(li);
+      } else {
+        latest.forEach((tx) => {
+          const li = document.createElement("li");
+          li.className = "notification-item";
+          li.dataset.txId = tx.transaction_id;
+          li.style.cssText =
+            "display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; gap: 8px;";
+
+          const isIncome = tx.type === "income";
+
+          // Type badge
+          const typeSpan = document.createElement("span");
+          typeSpan.style.cssText = `font-weight: bold; color: ${isIncome ? "#27ae60" : "#e74c3c"
+            }; min-width: 40px; font-size: 12px;`;
+          typeSpan.textContent = isIncome ? "Thu+" : "Chi-";
+
+          // Description
+          const descSpan = document.createElement("span");
+          descSpan.style.cssText =
+            "flex: 1; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;";
+          const desc = tx.description || tx.category_name || "Giao dịch";
+          descSpan.textContent = `${desc} (${tx.transaction_date})`;
+          descSpan.title = desc;
+
+          // Amount
+          const amountSpan = document.createElement("span");
+          amountSpan.style.cssText = `font-weight: bold; color: ${isIncome ? "#27ae60" : "#e74c3c"
+            }; font-size: 13px; min-width: 80px; text-align: right;`;
+          amountSpan.textContent =
+            (isIncome ? "+" : "-") + formatCurrency(tx.amount);
+
+          // Delete button
+          const delBtn = document.createElement("button");
+          delBtn.style.cssText =
+            "background: #ff6b6b; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;";
+          delBtn.textContent = "Xóa";
+          delBtn.onclick = async (e) => {
+            e.stopPropagation();
+            if (!confirm("Xác nhận xóa giao dịch này?")) return;
+
+            const userId = getUserId();
+            if (useLocalStorage) {
+              deleteTransactionFromStorage(userId, tx.transaction_id);
+            } else {
+              // Thử xóa qua API
+              try {
+                await fetch(
+                  `${API_BASE_URL}/transactions/${tx.transaction_id}`,
+                  { method: "DELETE" }
+                );
+              } catch (e) {
+                deleteTransactionFromStorage(userId, tx.transaction_id);
+              }
+            }
+            refreshDashboard();
+          };
+
+          li.appendChild(typeSpan);
+          li.appendChild(descSpan);
+          li.appendChild(amountSpan);
+          li.appendChild(delBtn);
+          listEl.appendChild(li);
         });
       }
 
-      function getCategoryNameById(categoryId, type) {
-        const categories = DEFAULT_CATEGORIES[type] || [];
-        const cat = categories.find((c) => c.category_id == categoryId);
-        return cat ? cat.name : "Khác";
+      if (countBadge) {
+        countBadge.textContent = transactions.length;
+        countBadge.style.cssText =
+          "background: #ff4757; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px;";
       }
+    }
 
-      // ===== REFRESH DASHBOARD (THỜI GIAN THỰC) =====
-      async function refreshDashboard() {
-        const userId = getUserId();
-        let transactions = [];
+    function loadCategories(type) {
+      const categorySelect = document.getElementById("transactionCategory");
+      if (!categorySelect) return;
 
-        // Thử lấy từ API trước
-        if (!useLocalStorage) {
-          try {
-            const resp = await fetch(
-              `${API_BASE_URL}/transactions?user_id=${userId}`,
-              {
-                signal: AbortSignal.timeout(3000), // Timeout 3s
-              }
-            );
-            if (resp.ok) {
-              const data = await resp.json();
-              transactions = data.transactions || [];
-              console.log("📡 Lấy dữ liệu từ API thành công");
-            } else {
-              throw new Error("API error");
-            }
-          } catch (e) {
-            console.log("⚠️ Không kết nối được API, chuyển sang localStorage");
-            useLocalStorage = true;
-          }
-        }
+      categorySelect.innerHTML =
+        '<option value="">-- Chọn Danh mục --</option>';
 
-        // Fallback sang localStorage
-        if (useLocalStorage) {
-          transactions = getTransactionsFromStorage(userId);
-          console.log(
-            "💾 Lấy dữ liệu từ localStorage:",
-            transactions.length,
-            "giao dịch"
-          );
-        }
-
-        // Hiển thị mode
-        const modeEl = document.getElementById("storageMode");
-        const actionsEl = document.getElementById("localStorageActions");
-        if (modeEl) {
-          if (useLocalStorage) {
-            modeEl.textContent = "💾 Offline Mode";
-            modeEl.style.cssText =
-              "background: #f39c12; color: white; font-size: 12px; padding: 4px 8px; border-radius: 4px;";
-            if (actionsEl) actionsEl.style.display = "block";
-          } else {
-            modeEl.textContent = "🌐 Online Mode";
-            modeEl.style.cssText =
-              "background: #27ae60; color: white; font-size: 12px; padding: 4px 8px; border-radius: 4px;";
-            if (actionsEl) actionsEl.style.display = "none";
-          }
-        }
-
-        // Tính toán và cập nhật UI
-        const stats = calculateStats(transactions);
-
-        updateStatsDisplay(stats);
-        updateNotificationList(transactions);
-        renderCategoryChart(stats.byCategory);
-        renderMonthlyChart(stats.byMonth);
-      }
-
-      // ===== KHỞI TẠO =====
-      document.addEventListener("DOMContentLoaded", async () => {
-        const userId = getUserId();
-        const userName = localStorage.getItem("user_name") || "Người dùng";
-
-        // Hiển thị tên
-        const profileEl = document.getElementById("profileName");
-        if (profileEl) profileEl.textContent = userName;
-
-        // Đặt ngày hiện tại
-        const dateInput = document.getElementById("transactionDate");
-        if (dateInput) dateInput.valueAsDate = new Date();
-
-        // Load categories
-        loadCategories(currentType);
-
-        // Tab switching
-        const expenseTab = document.getElementById("expense-tab");
-        const incomeTab = document.getElementById("income-tab");
-        const submitBtn = document.getElementById("btnSubmit");
-
-        if (expenseTab && incomeTab) {
-          expenseTab.addEventListener("click", () => {
-            currentType = "expense";
-            expenseTab.classList.add("active");
-            incomeTab.classList.remove("active");
-            loadCategories("expense");
-            if (submitBtn) {
-              submitBtn.innerHTML =
-                '<i class="fas fa-check"></i> Ghi nhận Chi tiêu';
-            }
-          });
-
-          incomeTab.addEventListener("click", () => {
-            currentType = "income";
-            incomeTab.classList.add("active");
-            expenseTab.classList.remove("active");
-            loadCategories("income");
-            if (submitBtn) {
-              submitBtn.innerHTML =
-                '<i class="fas fa-check"></i> Ghi nhận Thu nhập';
-            }
-          });
-        }
-
-        // Form submit
-        const form = document.getElementById("transactionForm");
-        if (form) {
-          form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const amount = parseFloat(
-              document.getElementById("transactionAmount").value
-            );
-            const categoryId = document.getElementById(
-              "transactionCategory"
-            ).value;
-            const transactionDate =
-              document.getElementById("transactionDate").value;
-            const description = document.getElementById(
-              "transactionDescription"
-            ).value;
-            const msgEl = document.getElementById("transactionMessage");
-
-            if (!amount || amount <= 0) {
-              if (msgEl) {
-                msgEl.textContent = "❌ Số tiền không hợp lệ";
-                msgEl.style.color = "red";
-              }
-              return;
-            }
-            if (!categoryId) {
-              if (msgEl) {
-                msgEl.textContent = "❌ Vui lòng chọn danh mục";
-                msgEl.style.color = "red";
-              }
-              return;
-            }
-
-            const categoryName = getCategoryNameById(categoryId, currentType);
-
-            const transaction = {
-              user_id: userId,
-              type: currentType,
-              amount: amount,
-              category_id: categoryId,
-              category_name: categoryName,
-              transaction_date: transactionDate,
-              description: description || categoryName,
-            };
-
-            // Thử lưu qua API
-            let savedToApi = false;
-            if (!useLocalStorage) {
-              try {
-                const resp = await fetch(`${API_BASE_URL}/transactions`, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(transaction),
-                  signal: AbortSignal.timeout(3000),
-                });
-                if (resp.ok) {
-                  savedToApi = true;
-                  console.log("📡 Đã lưu vào API");
-                }
-              } catch (e) {
-                console.log("⚠️ API không khả dụng, lưu vào localStorage");
-                useLocalStorage = true;
-              }
-            }
-
-            // Lưu vào localStorage (fallback hoặc song song)
-            if (useLocalStorage || !savedToApi) {
-              addTransactionToStorage(userId, transaction);
-              console.log("💾 Đã lưu vào localStorage");
-            }
-
-            // Thông báo thành công
-            if (msgEl) {
-              msgEl.textContent = `✅ Đã ghi nhận ${
-                currentType === "income" ? "thu nhập" : "chi tiêu"
-              }: ${formatCurrency(amount)}`;
-              msgEl.style.color = "green";
-              setTimeout(() => {
-                msgEl.textContent = "";
-              }, 3000);
-            }
-
-            // Reset form
-            form.reset();
-            if (dateInput) dateInput.valueAsDate = new Date();
-
-            // 🔄 CẬP NHẬT BIỂU ĐỒ REAL-TIME
-            refreshDashboard();
-          });
-        }
-
-        // Logout
-        const logoutBtn = document.getElementById("btnLogout");
-        if (logoutBtn) {
-          logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem("user_id");
-            localStorage.removeItem("user_name");
-            window.location.href = "index.html";
-          });
-        }
-
-        // Clear data button
-        const clearBtn = document.getElementById("btnClearData");
-        if (clearBtn) {
-          clearBtn.addEventListener("click", () => {
-            if (!confirm("⚠️ Xác nhận xóa TOÀN BỘ dữ liệu giao dịch?")) return;
-            clearAllTransactions(userId);
-            refreshDashboard();
-          });
-        }
-
-        // Export data button
-        const exportBtn = document.getElementById("btnExportData");
-        if (exportBtn) {
-          exportBtn.addEventListener("click", () => {
-            const transactions = getTransactionsFromStorage(userId);
-            const dataStr = JSON.stringify(
-              { user_id: userId, transactions: transactions },
-              null,
-              2
-            );
-            const blob = new Blob([dataStr], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `smartwallet_${userId}_${
-              new Date().toISOString().split("T")[0]
-            }.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-          });
-        }
-
-        // Load dữ liệu ban đầu
-        await refreshDashboard();
+      const categories = DEFAULT_CATEGORIES[type] || [];
+      categories.forEach((cat) => {
+        const option = document.createElement("option");
+        option.value = cat.category_id;
+        option.textContent = cat.name;
+        option.dataset.name = cat.name;
+        categorySelect.appendChild(option);
       });
-    </script>
-  </body>
+    }
+
+    function getCategoryNameById(categoryId, type) {
+      const categories = DEFAULT_CATEGORIES[type] || [];
+      const cat = categories.find((c) => c.category_id == categoryId);
+      return cat ? cat.name : "Khác";
+    }
+
+    // ===== REFRESH DASHBOARD (THỜI GIAN THỰC) =====
+    async function refreshDashboard() {
+      const userId = getUserId();
+      let transactions = [];
+
+      // Thử lấy từ API trước
+      if (!useLocalStorage) {
+        try {
+          const resp = await fetch(
+            `${API_BASE_URL}/transactions?user_id=${userId}`,
+            {
+              signal: AbortSignal.timeout(3000), // Timeout 3s
+            }
+          );
+          if (resp.ok) {
+            const data = await resp.json();
+            transactions = data.transactions || [];
+            console.log("📡 Lấy dữ liệu từ API thành công");
+          } else {
+            throw new Error("API error");
+          }
+        } catch (e) {
+          console.log("⚠️ Không kết nối được API, chuyển sang localStorage");
+          useLocalStorage = true;
+        }
+      }
+
+      // Fallback sang localStorage
+      if (useLocalStorage) {
+        transactions = getTransactionsFromStorage(userId);
+        console.log(
+          "💾 Lấy dữ liệu từ localStorage:",
+          transactions.length,
+          "giao dịch"
+        );
+      }
+
+      // Hiển thị mode
+      const modeEl = document.getElementById("storageMode");
+      const actionsEl = document.getElementById("localStorageActions");
+      if (modeEl) {
+        if (useLocalStorage) {
+          modeEl.textContent = "💾 Offline Mode";
+          modeEl.style.cssText =
+            "background: #f39c12; color: white; font-size: 12px; padding: 4px 8px; border-radius: 4px;";
+          if (actionsEl) actionsEl.style.display = "block";
+        } else {
+          modeEl.textContent = "🌐 Online Mode";
+          modeEl.style.cssText =
+            "background: #27ae60; color: white; font-size: 12px; padding: 4px 8px; border-radius: 4px;";
+          if (actionsEl) actionsEl.style.display = "none";
+        }
+      }
+
+      // Tính toán và cập nhật UI
+      const stats = calculateStats(transactions);
+
+      updateStatsDisplay(stats);
+      updateNotificationList(transactions);
+      renderCategoryChart(stats.byCategory);
+      renderMonthlyChart(stats.byMonth);
+    }
+
+    // ===== KHỞI TẠO =====
+    document.addEventListener("DOMContentLoaded", async () => {
+      const userId = getUserId();
+      const userName = localStorage.getItem("user_name") || "Người dùng";
+
+      // Hiển thị tên
+      const profileEl = document.getElementById("profileName");
+      if (profileEl) profileEl.textContent = userName;
+
+      // Đặt ngày hiện tại
+      const dateInput = document.getElementById("transactionDate");
+      if (dateInput) dateInput.valueAsDate = new Date();
+
+      // Load categories
+      loadCategories(currentType);
+
+      // Tab switching
+      const expenseTab = document.getElementById("expense-tab");
+      const incomeTab = document.getElementById("income-tab");
+      const submitBtn = document.getElementById("btnSubmit");
+
+      if (expenseTab && incomeTab) {
+        expenseTab.addEventListener("click", () => {
+          currentType = "expense";
+          expenseTab.classList.add("active");
+          incomeTab.classList.remove("active");
+          loadCategories("expense");
+          if (submitBtn) {
+            submitBtn.innerHTML =
+              '<i class="fas fa-check"></i> Ghi nhận Chi tiêu';
+          }
+        });
+
+        incomeTab.addEventListener("click", () => {
+          currentType = "income";
+          incomeTab.classList.add("active");
+          expenseTab.classList.remove("active");
+          loadCategories("income");
+          if (submitBtn) {
+            submitBtn.innerHTML =
+              '<i class="fas fa-check"></i> Ghi nhận Thu nhập';
+          }
+        });
+      }
+
+      // Form submit
+      const form = document.getElementById("transactionForm");
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const amount = parseFloat(
+            document.getElementById("transactionAmount").value
+          );
+          const categoryId = document.getElementById(
+            "transactionCategory"
+          ).value;
+          const transactionDate =
+            document.getElementById("transactionDate").value;
+          const description = document.getElementById(
+            "transactionDescription"
+          ).value;
+          const msgEl = document.getElementById("transactionMessage");
+
+          if (!amount || amount <= 0) {
+            if (msgEl) {
+              msgEl.textContent = "❌ Số tiền không hợp lệ";
+              msgEl.style.color = "red";
+            }
+            return;
+          }
+          if (!categoryId) {
+            if (msgEl) {
+              msgEl.textContent = "❌ Vui lòng chọn danh mục";
+              msgEl.style.color = "red";
+            }
+            return;
+          }
+
+          const categoryName = getCategoryNameById(categoryId, currentType);
+
+          const transaction = {
+            user_id: userId,
+            type: currentType,
+            amount: amount,
+            category_id: categoryId,
+            category_name: categoryName,
+            transaction_date: transactionDate,
+            description: description || categoryName,
+          };
+
+          // Thử lưu qua API
+          let savedToApi = false;
+          if (!useLocalStorage) {
+            try {
+              const resp = await fetch(`${API_BASE_URL}/transactions`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(transaction),
+                signal: AbortSignal.timeout(3000),
+              });
+              if (resp.ok) {
+                savedToApi = true;
+                console.log("📡 Đã lưu vào API");
+              }
+            } catch (e) {
+              console.log("⚠️ API không khả dụng, lưu vào localStorage");
+              useLocalStorage = true;
+            }
+          }
+
+          // Lưu vào localStorage (fallback hoặc song song)
+          if (useLocalStorage || !savedToApi) {
+            addTransactionToStorage(userId, transaction);
+            console.log("💾 Đã lưu vào localStorage");
+          }
+
+          // Thông báo thành công
+          if (msgEl) {
+            msgEl.textContent = `✅ Đã ghi nhận ${currentType === "income" ? "thu nhập" : "chi tiêu"
+              }: ${formatCurrency(amount)}`;
+            msgEl.style.color = "green";
+            setTimeout(() => {
+              msgEl.textContent = "";
+            }, 3000);
+          }
+
+          // Reset form
+          form.reset();
+          if (dateInput) dateInput.valueAsDate = new Date();
+
+          // 🔄 CẬP NHẬT BIỂU ĐỒ REAL-TIME
+          refreshDashboard();
+        });
+      }
+
+      // Logout
+      const logoutBtn = document.getElementById("btnLogout");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          localStorage.removeItem("user_id");
+          localStorage.removeItem("user_name");
+          window.location.href = "index.html";
+        });
+      }
+
+      // Clear data button
+      const clearBtn = document.getElementById("btnClearData");
+      if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+          if (!confirm("⚠️ Xác nhận xóa TOÀN BỘ dữ liệu giao dịch?")) return;
+          clearAllTransactions(userId);
+          refreshDashboard();
+        });
+      }
+
+      // Export data button
+      const exportBtn = document.getElementById("btnExportData");
+      if (exportBtn) {
+        exportBtn.addEventListener("click", () => {
+          const transactions = getTransactionsFromStorage(userId);
+          const dataStr = JSON.stringify(
+            { user_id: userId, transactions: transactions },
+            null,
+            2
+          );
+          const blob = new Blob([dataStr], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `smartwallet_${userId}_${new Date().toISOString().split("T")[0]
+            }.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+        });
+      }
+
+      // Load dữ liệu ban đầu
+      await refreshDashboard();
+    });
+  </script>
+</body>
+
 </html>

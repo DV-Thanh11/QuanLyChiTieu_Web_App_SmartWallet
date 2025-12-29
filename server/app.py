@@ -2,6 +2,7 @@ from flask import Flask
 from database.init_db import init_database
 from api.auth_routes import auth_bp
 from api.transaction_routes import transaction_bp
+from api.tietkiem_api import tietkiem_bp
 from flask_cors import CORS # Cần cài đặt: pip install flask-cors
 import os 
 from dotenv import load_dotenv 
@@ -22,6 +23,7 @@ init_database(app)
 # 2. Đăng ký Blueprint cho routes xác thực (US01)
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(transaction_bp, url_prefix='/api')
+app.register_blueprint(tietkiem_bp, url_prefix='/api')
 
 @app.route('/', methods=['GET'])
 def home():
