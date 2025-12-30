@@ -726,16 +726,8 @@ body {
   color: #2c3e50;
 }
 /* GIAO DIEN US05 */
-<<<<<<< HEAD
-/* 1. Thiết lập chung cho toàn bộ trang */
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Phông chữ hiện đại */
-  background-color: #f0f2f3;
-  margin: 0;
-=======
 #page-us05 {
   background-color: #84c7e9;
->>>>>>> 5f9b360bbcf90020c9efa5293c67e3b04d17402d
   padding: 20px;
   margin: 0;
 }
