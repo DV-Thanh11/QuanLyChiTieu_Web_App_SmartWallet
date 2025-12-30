@@ -541,7 +541,7 @@ body {
   right: 0; /* Canh lề phải thẳng hàng với nút */
   background-color: #ffffff;
   min-width: 220px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 100; /* Đè lên các thành phần khác */
   border-radius: 8px;
   padding: 10px 0;
@@ -595,129 +595,253 @@ body {
 }
 /* --- US06: SAVINGS GOAL CSS --- */
 .saving-goal-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    border-left: 5px solid #3498db; /* Viền xanh bên trái */
-    position: relative;
-    transition: transform 0.2s;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-left: 5px solid #3498db; /* Viền xanh bên trái */
+  position: relative;
+  transition: transform 0.2s;
 }
 
 .saving-goal-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .saving-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .saving-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #2c3e50;
+  font-size: 18px;
+  font-weight: bold;
+  color: #2c3e50;
 }
 
 .saving-amounts {
-    display: flex;
-    justify-content: space-between;
-    font-size: 15px;
-    color: #555;
-    margin-bottom: 8px;
-    font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 /* Thanh tiến độ */
 .progress-track {
-    width: 100%;
-    height: 10px;
-    background-color: #f0f2f5;
-    border-radius: 10px;
-    overflow: hidden;
+  width: 100%;
+  height: 10px;
+  background-color: #f0f2f5;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #3498db, #2ecc71);
-    width: 0%;
-    border-radius: 10px;
-    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  width: 0%;
+  border-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-delete-goal {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    color: #e74c3c;
-    cursor: pointer;
-    font-size: 16px;
-    opacity: 0.6;
-    transition: opacity 0.2s;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #e74c3c;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
 }
 
 .btn-delete-goal:hover {
-    opacity: 1;
+  opacity: 1;
 }
 /* --- CSS NÂNG CẤP GIAO DIỆN --- */
 
 /* 1. Card mục tiêu: Hiệu ứng nổi và bo góc */
 .savings-card {
-    background: #fff;
-    border-radius: 15px; /* Bo góc mềm mại */
-    border: none;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ */
-    transition: all 0.3s ease; /* Hiệu ứng mượt khi di chuột */
-    position: relative;
-    overflow: hidden;
+  background: #fff;
+  border-radius: 15px; /* Bo góc mềm mại */
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ */
+  transition: all 0.3s ease; /* Hiệu ứng mượt khi di chuột */
+  position: relative;
+  overflow: hidden;
 }
 
 /* Khi di chuột vào thì thẻ bay lên nhẹ */
 .savings-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 /* 2. Trang trí thêm icon mờ phía sau */
 .card-icon-bg {
-    position: absolute;
-    right: -10px;
-    bottom: -10px;
-    font-size: 80px;
-    color: rgba(0, 0, 0, 0.03); /* Rất mờ */
-    transform: rotate(-15deg);
-    z-index: 0;
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  font-size: 80px;
+  color: rgba(0, 0, 0, 0.03); /* Rất mờ */
+  transform: rotate(-15deg);
+  z-index: 0;
 }
 
 /* 3. Thanh tiến độ đẹp hơn */
 .custom-progress {
-    height: 12px;
-    background-color: #e9ecef;
-    border-radius: 10px;
-    margin: 15px 0;
-    overflow: hidden;
+  height: 12px;
+  background-color: #e9ecef;
+  border-radius: 10px;
+  margin: 15px 0;
+  overflow: hidden;
 }
 
 .custom-progress-bar {
-    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); /* Màu Gradient xanh */
-    border-radius: 10px;
-    transition: width 1s ease-in-out;
+  background: linear-gradient(
+    90deg,
+    #4facfe 0%,
+    #00f2fe 100%
+  ); /* Màu Gradient xanh */
+  border-radius: 10px;
+  transition: width 1s ease-in-out;
 }
 
 /* Màu Gradient cho trạng thái hoàn thành */
 .bg-success-gradient {
-    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%) !important;
+  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%) !important;
 }
 
 /* 4. Chỉnh lại chữ */
 .money-text {
-    font-family: 'Consolas', monospace; /* Phông chữ số nhìn chuyên nghiệp */
-    font-weight: 700;
-    color: #2c3e50;
+  font-family: "Consolas", monospace; /* Phông chữ số nhìn chuyên nghiệp */
+  font-weight: 700;
+  color: #2c3e50;
+}
+/* GIAO DIEN US05 */
+/* 1. Thiết lập chung cho toàn bộ trang */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Phông chữ hiện đại */
+  background-color: #5495ca;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  background-color: rgb(243, 243, 243);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+  max-width: 2000px;
+
+  margin: 50px auto;
+}
+
+h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* 3. Phần Form nhập liệu */
+.form-box {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+label {
+  font-weight: bold;
+  display: block; /* Để label nằm trên dòng riêng */
+  margin-top: 15px;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+/* Trang trí ô nhập liệu và menu thả xuống */
+input[type="number"],
+input[type="month"],
+select {
+  width: 100%; /* Rộng hết cỡ khung chứa */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Đảm bảo padding không làm vỡ khung */
+  font-size: 16px;
+}
+
+/* 4. Chỉnh riêng cho phần Checkbox (để nó nằm ngang hàng với chữ) */
+.checkbox-group {
+  margin-top: 15px;
+  display: flex; /* Dùng Flexbox để căn chỉnh ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+.checkbox-group input {
+  width: auto; /* Trả lại kích thước tự nhiên cho checkbox */
+  margin-right: 10px; /* Cách chữ ra một chút */
+  transform: scale(1.2); /* Phóng to checkbox lên một chút cho dễ bấm */
+}
+
+.checkbox-group label {
+  margin: 0; /* Xóa khoảng cách thừa */
+  cursor: pointer; /* Khi di chuột vào sẽ hiện hình bàn tay */
+}
+
+/* 5. Nút bấm (Button) */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background-color: #28a745; /* Màu xanh lá cây (tượng trưng cho tiền/thành công) */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s; /* Hiệu ứng chuyển màu mượt mà */
+}
+
+button:hover {
+  background-color: #218838; /* Đổi màu đậm hơn khi di chuột vào */
+}
+
+/* 6. Phần bảng danh sách (Table) */
+table {
+  width: 100%;
+  border-collapse: collapse; /* Gộp đường viền bảng lại cho đẹp */
+  margin-top: 20px;
+  background-color: white;
+}
+
+th,
+td {
+  border-bottom: 1px solid #ddd; /* Kẻ đường gạch ngang mờ */
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #e7982b;
+  color: white;
+}
+
+/* Tô màu xen kẽ cho các dòng bảng để dễ nhìn */
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Hiệu ứng khi di chuột vào dòng bảng */
+tbody tr:hover {
+  background-color: #e9ecef;
 }

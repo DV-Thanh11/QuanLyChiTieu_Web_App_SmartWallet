@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quản lý Ngân sách</title>
+    <link rel="stylesheet" href="../src/css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>💰 Thiết lập Ngân sách Chi tiêu</h2>
+
+      <div class="form-box">
+        <label>Chọn danh mục:</label>
+        <select id="chonDanhMuc">
+          <option value="6">🍔 Ăn uống</option>
+          <option value="8">🚗 Di chuyển</option>
+          <option value="7">🏠 Tiền nhà</option>
+          <option value="11">🎬 Giải trí</option>
+          <option value="10">📚 Học tập</option>
+          <option value="12">💰 Đầu tư & Tiết kiệm</option>
+          <option value="9">🛍️ Mua sắm</option>
+        </select>
+
+        <label>Số tiền giới hạn (VNĐ):</label>
+        <input type="number" id="nhapSoTien" placeholder="Ví dụ: 2000000" />
+
+        <label>Tháng áp dụng:</label>
+        <select
+          id="chonThang"
+          style="width: 100%; padding: 8px; margin-bottom: 15px"
+        >
+          <option value="01">Tháng 1</option>
+          <option value="02">Tháng 2</option>
+          <option value="03">Tháng 3</option>
+          <option value="04">Tháng 4</option>
+          <option value="05">Tháng 5</option>
+          <option value="06">Tháng 6</option>
+          <option value="07">Tháng 7</option>
+          <option value="08">Tháng 8</option>
+          <option value="09">Tháng 9</option>
+          <option value="10">Tháng 10</option>
+          <option value="11">Tháng 11</option>
+          <option value="12">Tháng 12</option>
+        </select>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="batCanhBao" />
+          <label for="batCanhBao">Bật cảnh báo khi tiêu quá tay 🚨</label>
+        </div>
+
+        <button onclick="luuNganSach()">💾 Lưu</button>
+      </div>
+
+      <hr />
+
+      <h3>Danh sách ngân sách hiện tại</h3>
+      <table border="1" cellpadding="10" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th>Tháng</th>
+            <th>Danh mục</th>
+            <th>Số tiền giới hạn</th>
+            <th>Cảnh báo</th>
+          </tr>
+        </thead>
+        <tbody id="bangHienThi"></tbody>
+      </table>
+    </div>
+    <script src="../src/js/ngansach.js"></script>
+  </body>
+</html>
