@@ -726,12 +726,18 @@ body {
   color: #2c3e50;
 }
 /* GIAO DIEN US05 */
+<<<<<<< HEAD
 /* 1. Thiết lập chung cho toàn bộ trang */
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Phông chữ hiện đại */
   background-color: #f0f2f3;
   margin: 0;
+=======
+#page-us05 {
+  background-color: #84c7e9;
+>>>>>>> 5f9b360bbcf90020c9efa5293c67e3b04d17402d
   padding: 20px;
+  margin: 0;
 }
 
 .container {
@@ -761,7 +767,7 @@ h2 {
 
 label {
   font-weight: bold;
-  display: block; /* Để label nằm trên dòng riêng */
+  display: block;
   margin-top: 15px;
   margin-bottom: 5px;
   color: #555;
@@ -771,11 +777,11 @@ label {
 input[type="number"],
 input[type="month"],
 select {
-  width: 100%; /* Rộng hết cỡ khung chứa */
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-sizing: border-box; /* Đảm bảo padding không làm vỡ khung */
+  box-sizing: border-box;
   font-size: 16px;
 }
 
@@ -783,18 +789,18 @@ select {
 .checkbox-group {
   margin-top: 15px;
   display: flex; /* Dùng Flexbox để căn chỉnh ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
+  align-items: center;
 }
 
 .checkbox-group input {
-  width: auto; /* Trả lại kích thước tự nhiên cho checkbox */
-  margin-right: 10px; /* Cách chữ ra một chút */
-  transform: scale(1.2); /* Phóng to checkbox lên một chút cho dễ bấm */
+  width: auto;
+  margin-right: 10px;
+  transform: scale(1.2);
 }
 
 .checkbox-group label {
-  margin: 0; /* Xóa khoảng cách thừa */
-  cursor: pointer; /* Khi di chuột vào sẽ hiện hình bàn tay */
+  margin: 0;
+  cursor: pointer;
 }
 
 /* 5. Nút bấm (Button) */
@@ -802,31 +808,31 @@ button {
   width: 100%;
   padding: 12px;
   margin-top: 20px;
-  background-color: #28a745; /* Màu xanh lá cây (tượng trưng cho tiền/thành công) */
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 5px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s; /* Hiệu ứng chuyển màu mượt mà */
+  transition: background 0.3s;
 }
 
 button:hover {
-  background-color: #218838; /* Đổi màu đậm hơn khi di chuột vào */
+  background-color: #218838;
 }
 
 /* 6. Phần bảng danh sách (Table) */
 table {
   width: 100%;
-  border-collapse: collapse; /* Gộp đường viền bảng lại cho đẹp */
+  border-collapse: collapse;
   margin-top: 20px;
   background-color: white;
 }
 
 th,
 td {
-  border-bottom: 1px solid #ddd; /* Kẻ đường gạch ngang mờ */
+  border-bottom: 1px solid #ddd;
   padding: 12px;
   text-align: left;
 }
@@ -836,12 +842,10 @@ th {
   color: white;
 }
 
-/* Tô màu xen kẽ cho các dòng bảng để dễ nhìn */
 tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-/* Hiệu ứng khi di chuột vào dòng bảng */
 tbody tr:hover {
   background-color: #e9ecef;
 }
