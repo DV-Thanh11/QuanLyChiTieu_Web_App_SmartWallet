@@ -20,7 +20,7 @@ app.config['MYSQL_DB'] = 'financial_app'
 # 1. Khởi tạo và tạo bảng (Tự động chạy script SQL)
 init_database(app)
 
-# 2. Đăng ký Blueprint cho routes xác thực (US01)
+
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(transaction_bp, url_prefix='/api')
 app.register_blueprint(tietkiem_bp, url_prefix='/api')

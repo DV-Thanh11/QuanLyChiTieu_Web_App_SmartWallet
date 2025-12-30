@@ -49,7 +49,7 @@ def add_saving():
     
     # SQL Khớp với ERD
     query = """
-        INSERT INTO saving (user_id,name,target_amout,current_amount,deadline)
+        INSERT INTO savings_goals (user_id,name,target_amount,current_amount,deadline)
         VALUES (%s, %s, %s, %s, %s)
     """
     try:

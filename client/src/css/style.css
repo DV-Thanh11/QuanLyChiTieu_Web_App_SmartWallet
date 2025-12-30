@@ -729,7 +729,7 @@ body {
 /* 1. Thiết lập chung cho toàn bộ trang */
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Phông chữ hiện đại */
-  background-color: #5495ca;
+  background-color: #f0f2f3;
   margin: 0;
   padding: 20px;
 }
