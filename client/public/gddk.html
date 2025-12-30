@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giao dịch định kỳ | SmartWallet</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../src/css/style.css" />
+    <style>
+      body {
+        background-color: #203750;
+        background-image: linear-gradient(315deg, #203750 0%, #F9FCFF 74%);
+        min-height: 100vh;
+      }
+      .container { background: transparent; box-shadow: none; }
+      #runNow {
+        font-size: 1.05rem;
+        font-weight: 700;
+        padding: 8px 14px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        height: auto;
+        width: 300px;
+      }
+    </style>
+  </head>
+  <body id="page-gddk">
+    <div class="container py-5" style="max-width: 980px;">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="fas fa-sync-alt text-primary"></i> Giao dịch định kỳ</h2>
+        <a href="dashboard.html" class="btn btn-outline-secondary">
+          <i class="fas fa-arrow-left"></i> Quay lại
+        </a>
+      </div>
+
+      <div class="transaction-card mb-4">
+        <div class="card-header">
+          <h3><i class="fas fa-sync-alt"></i> Thêm / Chỉnh Giao Dịch Định Kỳ</h3>
+        </div>
+        <form id="recurringForm" class="transaction-form row g-3">
+            <div class="col-12 d-flex gap-2 mb-2">
+              <button type="button" id="tabExpense" class="tab-btn btn btn-sm btn-outline-danger active" data-type="expense">Chi tiêu</button>
+              <button type="button" id="tabIncome" class="tab-btn btn btn-sm btn-outline-success" data-type="income">Thu nhập</button>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Số tiền (VNĐ)</label>
+              <input type="number" id="recAmount" class="form-control" required min="1000" step="1000" />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Danh mục</label>
+              <select id="recCategory" class="form-select"></select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Ngày bắt đầu</label>
+              <input type="date" id="recStartDate" class="form-control" required />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Tần suất</label>
+              <div class="d-flex gap-2">
+                <select id="recFrequency" class="form-select">
+                  <option value="daily">Hàng ngày</option>
+                  <option value="weekly">Hàng tuần</option>
+                  <option value="monthly">Hàng tháng</option>
+                  <option value="yearly">Hàng năm</option>
+                </select>
+                <input type="number" id="recInterval" class="form-control" value="1" min="1" style="width:110px" />
+              </div>
+              <small class="text-muted">Khoảng (ví dụ: 1 = mỗi, 2 = mỗi 2 đơn vị)</small>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Ngày kết thúc (tùy chọn)</label>
+              <input type="date" id="recEndDate" class="form-control" />
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Ghi chú</label>
+              <input type="text" id="recDescription" class="form-control" maxlength="100" placeholder="Ví dụ: Tiền nhà" />
+            </div>
+
+            <div class="col-12">
+              <div id="recMessage" class="form-message"></div>
+            </div>
+
+            <div class="col-12 d-flex gap-2">
+              <button type="submit" class="submit-btn">
+                <i class="fas fa-save"></i> Lưu giao dịch định kỳ
+              </button>
+            </div>
+        </form>
+      </div>
+
+      <h3 class="mb-2">Danh sách giao dịch định kỳ</h3>
+        <div class="card">
+        <div class="card-body p-0">
+          <table class="table table-striped mb-0">
+            <caption>
+              <div class="d-flex justify-content-center py-2">
+                <button type="button" id="runNow" class="btn btn-warning">⚡ Áp dụng đến hôm nay</button>
+              </div>
+            </caption>
+            <thead>
+              <tr>
+                <th>Loại</th>
+                <th>Số tiền</th>
+                <th>Danh mục</th>
+                <th>Tần suất</th>
+                <th>Bắt đầu</th>
+                <th>Kết thúc</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="recList"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../src/js/gddk.js"></script>
+  </body>
+</html>

@@ -671,6 +671,27 @@
         );
       }
 
+      // Nếu API khả dụng nhưng vẫn có giao dịch chưa được lưu lên server (ví dụ từ trang GDDK offline),
+      // hợp nhất các giao dịch localStorage vào danh sách hiển thị (không duplicate)
+      if (!useLocalStorage) {
+        try {
+          const localTx = getTransactionsFromStorage(userId) || [];
+          if (localTx.length > 0) {
+            const seen = new Set(transactions.map((t) => t.transaction_id));
+            // Thêm những giao dịch local không có trên API vào đầu danh sách
+            localTx.forEach((lt) => {
+              if (!seen.has(lt.transaction_id)) {
+                transactions.unshift(lt);
+                seen.add(lt.transaction_id);
+              }
+            });
+            console.log("🔀 Hợp nhất giao dịch localStorage vào danh sách hiển thị:", localTx.length);
+          }
+        } catch (e) {
+          console.log("⚠️ Lỗi khi hợp nhất localStorage:", e);
+        }
+      }
+
       // Hiển thị mode
       const modeEl = document.getElementById("storageMode");
       const actionsEl = document.getElementById("localStorageActions");
