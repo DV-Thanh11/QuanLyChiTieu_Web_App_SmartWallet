@@ -1,4 +1,5 @@
 from flask import Flask
+from datetime import datetime
 from database.init_db import init_database
 from api.auth_routes import auth_bp
 from api.transaction_routes import transaction_bp
@@ -41,6 +42,8 @@ if __name__ == '__main__':
             while True:
                 try:
                     inserted = process_due_recurring_once()
+                    # record last run timestamp (UTC ISO) so UI can query it
+                    app.config['LAST_RECURRING_RUN'] = datetime.utcnow().isoformat()
                     print(f"[recurring-scheduler] applied recurring, inserted={inserted}")
                 except Exception as e:
                     print("[recurring-scheduler] error:", e)

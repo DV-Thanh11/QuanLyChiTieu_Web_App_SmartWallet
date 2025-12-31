@@ -1,5 +1,7 @@
 // gddk.js - Quản lý giao dịch định kỳ (client-side localStorage)
 (function () {
+  const AUTO_SCHED_INTERVAL = 3600; // default seconds (matches server default env RECURRING_INTERVAL_SECONDS)
+  const API_BASE_URL = "http://127.0.0.1:5000/api";
   const RECUR_KEY_PREFIX = "smartwallet_recurring_";
   const TX_KEY_PREFIX = "smartwallet_transactions_";
 
@@ -250,6 +252,18 @@
     // load list
     renderRecurringList();
 
+    (async function updateLastRunNotice() {
+      try {
+        const resp = await fetch(`${API_BASE_URL}/recurring/last_run`);
+        if (!resp.ok) return;
+        const j = await resp.json();
+        const dt = new Date(j.last_run);
+        const pretty = isNaN(dt.getTime()) ? j.last_run : dt.toLocaleString();
+          notice.textContent = `Giao dịch định kỳ được áp dụng tự động. Lần chạy gần nhất: ${pretty}`;
+      } catch (e) {
+        console.warn('Could not fetch last run', e);
+      }
+    })();
     // form handler
     const form = document.getElementById("recurringForm");
     form.addEventListener("submit", (e) => {
@@ -300,13 +314,9 @@
       renderRecurringList();
     });
 
-    document.getElementById("runNow").onclick = () => {
-      const count = processDueRecurrences();
-      alert("Đã xử lý giao dịch định kỳ. Số mẫu đã có: " + count);
-      renderRecurringList();
-    };
-
     // Auto-run once on load to ensure past-due recurrences are applied when user visits this page
     processDueRecurrences();
+
+    // leave the existing HTML notice as-is; fetched last-run will override it if available
   });
 })();

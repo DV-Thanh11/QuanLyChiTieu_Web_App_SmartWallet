@@ -120,10 +120,19 @@ def apply_due_recurring():
     # wrapper route: call reusable processor
     try:
         inserted = process_due_recurring_once()
+        # record last run time in app config (UTC ISO)
+        current_app.config['LAST_RECURRING_RUN'] = datetime.utcnow().isoformat()
         return jsonify({'message': 'Done', 'inserted': inserted}), 200
     except Exception as err:
         print('Error in apply_due_recurring route:', err)
         return jsonify({'message': 'Lỗi server khi áp dụng recurring.'}), 500
+
+
+@gddk_bp.route('/recurring/last_run', methods=['GET'])
+def recurring_last_run():
+    """Return the last time the recurring processor ran (UTC ISO) as stored in app config."""
+    val = current_app.config.get('LAST_RECURRING_RUN')
+    return jsonify({'last_run': val}), 200
 
 
 def process_due_recurring_once():
