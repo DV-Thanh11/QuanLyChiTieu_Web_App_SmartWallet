@@ -62,18 +62,63 @@ def add_saving():
         cursor.close()
         conn.close()
 
-# --- 3. Xóa (DELETE) ---
+# --- 3. Xóa (DELETE) & HOÀN TIỀN ---
 @tietkiem_bp.route('/savings/<int:goal_id>', methods=['DELETE'])
 def delete_saving(goal_id):
+    # Lấy data an toàn (để nhận category_id và note từ Frontend)
+    data = request.get_json(silent=True) or {}
+    
     conn = get_db_connection()
     cursor = conn.cursor()
-    # SQL Khớp với ERD
-    cursor.execute("DELETE FROM savings_goals WHERE goal_id = %s", (goal_id,))
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return jsonify({"message": "Đã xóa"}), 200
+    
+    try:
+        conn.start_transaction() # Bắt đầu transaction
 
+        # BƯỚC 1: Lấy thông tin mục tiêu
+        query_get = "SELECT user_id, current_amount, name FROM savings_goals WHERE goal_id = %s"
+        cursor.execute(query_get, (goal_id,))
+        goal = cursor.fetchone()
+
+        if not goal:
+            return jsonify({"error": "Không tìm thấy mục tiêu"}), 404
+
+        user_id = goal[0]      
+        amount_to_refund = goal[1] 
+        goal_name = goal[2]    
+
+        # BƯỚC 2: Hoàn tiền về ví (Tạo giao dịch INCOME)
+        if amount_to_refund > 0:
+            refund_category_id = data.get('category_id')
+
+            if not refund_category_id: 
+                refund_category_id = 5 
+            
+            sql_refund = """
+                INSERT INTO transactions (user_id, category_id, amount, type, description, transaction_date)
+                VALUES (%s, %s, %s, 'income', %s, NOW())
+            """
+            
+            description = data.get('note', f"Hoàn tiền do xóa mục tiêu: {goal_name}")
+            
+            cursor.execute(sql_refund, (user_id, refund_category_id, amount_to_refund, description))
+
+        # BƯỚC 3: Xóa mục tiêu
+        cursor.execute("DELETE FROM savings_goals WHERE goal_id = %s", (goal_id,))
+        
+        conn.commit()
+        
+        return jsonify({
+            "message": "Đã xử lý thành công!",
+            "refunded": amount_to_refund
+        }), 200
+
+    except Exception as e:
+        conn.rollback() 
+        return jsonify({"error": str(e)}), 500
+        
+    finally:
+        cursor.close()
+        conn.close()
 # --- 4. NẠP TIỀN & TÍNH SỐ DƯ ĐỘNG (QUAN TRỌNG) ---
 @tietkiem_bp.route('/savings/deposit', methods=['POST'])
 def deposit_to_goal():
@@ -93,11 +138,9 @@ def deposit_to_goal():
         conn.start_transaction()
 
         # BƯỚC A: TÍNH SỐ DƯ (Dựa vào bảng transactions)
-        # Tổng thu (type = 'income')
         cursor.execute("SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE user_id = %s AND type = 'income'", (user_id,))
         total_income = cursor.fetchone()[0]
 
-        # Tổng chi (type = 'expense')
         cursor.execute("SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE user_id = %s AND type = 'expense'", (user_id,))
         total_expense = cursor.fetchone()[0]
 
@@ -107,8 +150,6 @@ def deposit_to_goal():
             return jsonify({"error": f"Số dư hiện tại ({balance:,.0f}đ) không đủ để nạp"}), 400
 
         # BƯỚC B: THỰC HIỆN GIAO DỊCH
-        # 1. Thêm vào bảng TRANSACTIONS (Ghi nhận là 'expense')
-        # Lưu ý: Cột description thay vì note, transaction_date thay vì date
         sql_insert_trans = """
             INSERT INTO transactions (user_id, category_id, amount, type, description, transaction_date)
             VALUES (%s, %s, %s, 'expense', %s, NOW())
